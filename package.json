@@ -1,0 +1,19 @@
+{
+  "name": "h",
+  "version": "0.0.0",
+  "homepage": "https://github.com/dominictarr/h",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dominictarr/h.git"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "tap": "0.3.0"
+  },
+  "scripts": {
+    "test": "tap test"
+  },
+  "author": "'Dominic Tarr' <dominic.tarr@gmail.com> (http://dominictarr.com)",
+  "license": "MIT"  
+}

@@ -1,0 +1,32 @@
+<html>
+<script src=../index.js></script>
+<style>
+  .WIDGET.thing {
+    background-color: red;
+  }
+</style>
+<body>
+</body>
+<script>
+
+document.body.appendChild(
+  h('div#page',
+    h('div#header',
+      h('h1.classy', 'h')),
+    h('div#menu', { style: { float: 'left', width: '200px' } },
+      h('ul',
+        h('li', 'one'),
+        h('li', 'two'),
+        h('li', 'three'))),
+    h('div#content', {style: {float: 'left'} },
+      h('h2', 'content title'),
+      h('p', 
+        "so it's just like a templating engine,\n",
+        "but easy to use inline with javascript\n"),
+      h('p', 
+        "the intension is for this to be used to create\n",
+        "reusable, interactive html widgets. ")))
+)
+
+</script>
+</html>
