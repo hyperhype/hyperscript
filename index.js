@@ -27,6 +27,12 @@ function h() {
       else
         e.appendChild(document.createTextNode(l))
     }
+    else if('number' === typeof l 
+      || 'boolean' === typeof l
+      || l instanceof Date 
+      || l instanceof RegExp ) {
+        e.appendChild(document.createTextNode(l.toString()))
+    }
     else if (Array.isArray(l))
       l.forEach(item)
     else if(l instanceof HTMLElement)
