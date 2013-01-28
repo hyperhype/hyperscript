@@ -35,7 +35,7 @@ function h() {
     //there might be a better way to handle this...
     else if (Array.isArray(l))
       l.forEach(item)
-    else if(l instanceof HTMLElement)
+    else if(l instanceof Node)
       e.appendChild(r = l)
     else if(l instanceof Text)
       e.appendChild(r = l)
@@ -87,7 +87,7 @@ function h() {
 }
 
 if(typeof module === 'object')
-  module.exports = h
+ module.exports = h
 else
   this.hyperscript = h
 })()
