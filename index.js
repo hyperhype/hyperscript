@@ -43,7 +43,7 @@ function h() {
       for (var k in l) {
         if('function' === typeof l[k]) {
           if(/^on\w+/.test(k)) {
-            e.addEventListener(k, l[k])
+            e.addEventListener(k.substring(2), l[k])
           } else {
             e[k] = l[k]()
             l[k](function (v) {
