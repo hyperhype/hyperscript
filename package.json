@@ -1,10 +1,10 @@
 {
-  "name": "h",
+  "name": "hyperscript",
   "version": "0.1.0",
-  "homepage": "https://github.com/dominictarr/h",
+  "homepage": "https://github.com/dominictarr/hyperscript",
   "repository": {
     "type": "git",
-    "url": "git://github.com/dominictarr/h.git"
+    "url": "git://github.com/dominictarr/hyperscript.git"
   },
   "dependencies": {
   },
