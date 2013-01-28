@@ -2,7 +2,7 @@
 
 Create HyperText with JavaScript.
 
-[Interactive Demo](https://dominictarr.github.com/hyperscript)
+[Interactive Demo](http://dominictarr.github.com/hyperscript)
 
 ## Example
 
