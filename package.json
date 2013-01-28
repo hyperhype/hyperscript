@@ -1,0 +1,11 @@
+{
+  "name": "hyperscript",
+  "version": "1.0.0",
+  "homepage": "https://github.com/dominictarr/hyperscript",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dominictarr/hyperscript.git"
+  },
+  "author": "'Dominic Tarr' <dominic.tarr@gmail.com> (http://dominictarr.com)",
+  "license": "MIT"  
+}
