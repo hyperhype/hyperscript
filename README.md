@@ -34,7 +34,7 @@ Create an `HTMLElement`. first argument must be the tag name.
 If the tag name is of form `name.class1.class2#id` that is a short cut
 for setting the class and id.
 
-### attributes
+### Attributes
 
 If an `{}` object is passed in, it's values will be used to set attributes.
 
