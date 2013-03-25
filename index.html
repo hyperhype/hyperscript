@@ -281,358 +281,20 @@ require.alias = function (from, to) {
 })();
 
 
-require.define("path",function(require,module,exports,__dirname,__filename,process,global){function filter (xs, fn) {
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (fn(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
+require.define("path",Function(['require','module','exports','__dirname','__filename','process','global'],"function filter (xs, fn) {\n    var res = [];\n    for (var i = 0; i < xs.length; i++) {\n        if (fn(xs[i], i, xs)) res.push(xs[i]);\n    }\n    return res;\n}\n\n// resolves . and .. elements in a path array with directory names there\n// must be no slashes, empty elements, or device names (c:\\) in the array\n// (so also no leading and trailing slashes - it does not distinguish\n// relative and absolute paths)\nfunction normalizeArray(parts, allowAboveRoot) {\n  // if the path tries to go above the root, `up` ends up > 0\n  var up = 0;\n  for (var i = parts.length; i >= 0; i--) {\n    var last = parts[i];\n    if (last == '.') {\n      parts.splice(i, 1);\n    } else if (last === '..') {\n      parts.splice(i, 1);\n      up++;\n    } else if (up) {\n      parts.splice(i, 1);\n      up--;\n    }\n  }\n\n  // if the path is allowed to go above the root, restore leading ..s\n  if (allowAboveRoot) {\n    for (; up--; up) {\n      parts.unshift('..');\n    }\n  }\n\n  return parts;\n}\n\n// Regex to split a filename into [*, dir, basename, ext]\n// posix version\nvar splitPathRe = /^(.+\\/(?!$)|\\/)?((?:.+?)?(\\.[^.]*)?)$/;\n\n// path.resolve([from ...], to)\n// posix version\nexports.resolve = function() {\nvar resolvedPath = '',\n    resolvedAbsolute = false;\n\nfor (var i = arguments.length; i >= -1 && !resolvedAbsolute; i--) {\n  var path = (i >= 0)\n      ? arguments[i]\n      : process.cwd();\n\n  // Skip empty and invalid entries\n  if (typeof path !== 'string' || !path) {\n    continue;\n  }\n\n  resolvedPath = path + '/' + resolvedPath;\n  resolvedAbsolute = path.charAt(0) === '/';\n}\n\n// At this point the path should be resolved to a full absolute path, but\n// handle relative paths to be safe (might happen when process.cwd() fails)\n\n// Normalize the path\nresolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {\n    return !!p;\n  }), !resolvedAbsolute).join('/');\n\n  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';\n};\n\n// path.normalize(path)\n// posix version\nexports.normalize = function(path) {\nvar isAbsolute = path.charAt(0) === '/',\n    trailingSlash = path.slice(-1) === '/';\n\n// Normalize the path\npath = normalizeArray(filter(path.split('/'), function(p) {\n    return !!p;\n  }), !isAbsolute).join('/');\n\n  if (!path && !isAbsolute) {\n    path = '.';\n  }\n  if (path && trailingSlash) {\n    path += '/';\n  }\n  \n  return (isAbsolute ? '/' : '') + path;\n};\n\n\n// posix version\nexports.join = function() {\n  var paths = Array.prototype.slice.call(arguments, 0);\n  return exports.normalize(filter(paths, function(p, index) {\n    return p && typeof p === 'string';\n  }).join('/'));\n};\n\n\nexports.dirname = function(path) {\n  var dir = splitPathRe.exec(path)[1] || '';\n  var isWindows = false;\n  if (!dir) {\n    // No dirname\n    return '.';\n  } else if (dir.length === 1 ||\n      (isWindows && dir.length <= 3 && dir.charAt(1) === ':')) {\n    // It is just a slash or a drive letter with a slash\n    return dir;\n  } else {\n    // It is a full dirname, strip trailing slash\n    return dir.substring(0, dir.length - 1);\n  }\n};\n\n\nexports.basename = function(path, ext) {\n  var f = splitPathRe.exec(path)[2] || '';\n  // TODO: make this comparison case-insensitive on windows?\n  if (ext && f.substr(-1 * ext.length) === ext) {\n    f = f.substr(0, f.length - ext.length);\n  }\n  return f;\n};\n\n\nexports.extname = function(path) {\n  return splitPathRe.exec(path)[3] || '';\n};\n\nexports.relative = function(from, to) {\n  from = exports.resolve(from).substr(1);\n  to = exports.resolve(to).substr(1);\n\n  function trim(arr) {\n    var start = 0;\n    for (; start < arr.length; start++) {\n      if (arr[start] !== '') break;\n    }\n\n    var end = arr.length - 1;\n    for (; end >= 0; end--) {\n      if (arr[end] !== '') break;\n    }\n\n    if (start > end) return [];\n    return arr.slice(start, end - start + 1);\n  }\n\n  var fromParts = trim(from.split('/'));\n  var toParts = trim(to.split('/'));\n\n  var length = Math.min(fromParts.length, toParts.length);\n  var samePartsLength = length;\n  for (var i = 0; i < length; i++) {\n    if (fromParts[i] !== toParts[i]) {\n      samePartsLength = i;\n      break;\n    }\n  }\n\n  var outputParts = [];\n  for (var i = samePartsLength; i < fromParts.length; i++) {\n    outputParts.push('..');\n  }\n\n  outputParts = outputParts.concat(toParts.slice(samePartsLength));\n\n  return outputParts.join('/');\n};\n\n//@ sourceURL=path"
+));
 
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length; i >= 0; i--) {
-    var last = parts[i];
-    if (last == '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
-    }
-  }
+require.define("__browserify_process",Function(['require','module','exports','__dirname','__filename','process','global'],"var process = module.exports = {};\n\nprocess.nextTick = (function () {\n    var canSetImmediate = typeof window !== 'undefined'\n        && window.setImmediate;\n    var canPost = typeof window !== 'undefined'\n        && window.postMessage && window.addEventListener\n    ;\n\n    if (canSetImmediate) {\n        return function (f) { return window.setImmediate(f) };\n    }\n\n    if (canPost) {\n        var queue = [];\n        window.addEventListener('message', function (ev) {\n            if (ev.source === window && ev.data === 'browserify-tick') {\n                ev.stopPropagation();\n                if (queue.length > 0) {\n                    var fn = queue.shift();\n                    fn();\n                }\n            }\n        }, true);\n\n        return function nextTick(fn) {\n            queue.push(fn);\n            window.postMessage('browserify-tick', '*');\n        };\n    }\n\n    return function nextTick(fn) {\n        setTimeout(fn, 0);\n    };\n})();\n\nprocess.title = 'browser';\nprocess.browser = true;\nprocess.env = {};\nprocess.argv = [];\n\nprocess.binding = function (name) {\n    if (name === 'evals') return (require)('vm')\n    else throw new Error('No such module. (Possibly not yet loaded)')\n};\n\n(function () {\n    var cwd = '/';\n    var path;\n    process.cwd = function () { return cwd };\n    process.chdir = function (dir) {\n        if (!path) path = require('path');\n        cwd = path.resolve(dir, cwd);\n    };\n})();\n\n//@ sourceURL=__browserify_process"
+));
 
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
+require.define("/node_modules/hyperscript/node_modules/hyperscript/package.json",Function(['require','module','exports','__dirname','__filename','process','global'],"module.exports = {}\n//@ sourceURL=/node_modules/hyperscript/node_modules/hyperscript/package.json"
+));
 
-  return parts;
-}
+require.define("/node_modules/hyperscript/index.js",Function(['require','module','exports','__dirname','__filename','process','global'],";(function () {\n\nfunction h() {\n  var args = [].slice.call(arguments), e = null\n  function item (l) {\n    var r\n    function parseClass (string) {\n      var m = string.split(/([\\.#]?[a-zA-Z0-9_-]+)/)\n      m.forEach(function (v) {\n        var s = v.substring(1,v.length)\n        if(!v) return \n        if(!e)\n          e = document.createElement(v)\n        else if (v[0] === '.')\n          e.classList.add(s)\n        else if (v[0] === '#')\n          e.setAttribute('id', s)\n      })\n    }\n\n    if(l == null)\n      ;\n    else if('string' === typeof l) {\n      if(!e)\n        parseClass(l)\n      else\n        e.appendChild(r = document.createTextNode(l))\n    }\n    else if('number' === typeof l \n      || 'boolean' === typeof l\n      || l instanceof Date \n      || l instanceof RegExp ) {\n        e.appendChild(r = document.createTextNode(l.toString()))\n    }\n    //there might be a better way to handle this...\n    else if (Array.isArray(l))\n      l.forEach(item)\n    else if(l instanceof Node)\n      e.appendChild(r = l)\n    else if(l instanceof Text)\n      e.appendChild(r = l)\n    else if ('object' === typeof l) {\n      for (var k in l) {\n        if('function' === typeof l[k]) {\n          if(/^on\\w+/.test(k)) {\n            e.addEventListener(k.substring(2), l[k])\n          } else {\n            e[k] = l[k]()\n            l[k](function (v) {\n              e[k] = v\n            })\n          }\n        }\n        else if(k === 'style') {\n          for (var s in l[k]) (function(s, v) {\n            if('function' === typeof v) {\n              e.style.setProperty(s, v())\n              v(function (val) {\n                e.style.setProperty(s, val)\n              })\n            } else\n              e.style.setProperty(s, l[k][s])\n          })(s, l[k][s])\n        } else\n          e[k] = l[k]\n      }\n    } else if ('function' === typeof l) {\n      //assume it's an observable!\n      var v = l()\n      e.appendChild(r = v instanceof Node ? v : document.createTextNode(v))\n\n      l(function (v) {\n        if(v instanceof Node && r.parentElement)\n          r.parentElement.replaceChild(v, r), r = v\n        else\n          r.textContent = v\n      })\n      \n    }\n\n    return r\n  }\n  while(args.length)\n    item(args.shift())\n\n  return e\n}\n\nif(typeof module === 'object')\n module.exports = h\nelse\n  this.hyperscript = h\n})()\n\n//@ sourceURL=/node_modules/hyperscript/index.js"
+));
 
-// Regex to split a filename into [*, dir, basename, ext]
-// posix version
-var splitPathRe = /^(.+\/(?!$)|\/)?((?:.+?)?(\.[^.]*)?)$/;
-
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-var resolvedPath = '',
-    resolvedAbsolute = false;
-
-for (var i = arguments.length; i >= -1 && !resolvedAbsolute; i--) {
-  var path = (i >= 0)
-      ? arguments[i]
-      : process.cwd();
-
-  // Skip empty and invalid entries
-  if (typeof path !== 'string' || !path) {
-    continue;
-  }
-
-  resolvedPath = path + '/' + resolvedPath;
-  resolvedAbsolute = path.charAt(0) === '/';
-}
-
-// At this point the path should be resolved to a full absolute path, but
-// handle relative paths to be safe (might happen when process.cwd() fails)
-
-// Normalize the path
-resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
-
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
-
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-var isAbsolute = path.charAt(0) === '/',
-    trailingSlash = path.slice(-1) === '/';
-
-// Normalize the path
-path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
-
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
-  
-  return (isAbsolute ? '/' : '') + path;
-};
-
-
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    return p && typeof p === 'string';
-  }).join('/'));
-};
-
-
-exports.dirname = function(path) {
-  var dir = splitPathRe.exec(path)[1] || '';
-  var isWindows = false;
-  if (!dir) {
-    // No dirname
-    return '.';
-  } else if (dir.length === 1 ||
-      (isWindows && dir.length <= 3 && dir.charAt(1) === ':')) {
-    // It is just a slash or a drive letter with a slash
-    return dir;
-  } else {
-    // It is a full dirname, strip trailing slash
-    return dir.substring(0, dir.length - 1);
-  }
-};
-
-
-exports.basename = function(path, ext) {
-  var f = splitPathRe.exec(path)[2] || '';
-  // TODO: make this comparison case-insensitive on windows?
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-
-exports.extname = function(path) {
-  return splitPathRe.exec(path)[3] || '';
-};
-
-});
-
-require.define("__browserify_process",function(require,module,exports,__dirname,__filename,process,global){var process = module.exports = {};
-
-process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined'
-        && window.setImmediate;
-    var canPost = typeof window !== 'undefined'
-        && window.postMessage && window.addEventListener
-    ;
-
-    if (canSetImmediate) {
-        return function (f) { return window.setImmediate(f) };
-    }
-
-    if (canPost) {
-        var queue = [];
-        window.addEventListener('message', function (ev) {
-            if (ev.source === window && ev.data === 'browserify-tick') {
-                ev.stopPropagation();
-                if (queue.length > 0) {
-                    var fn = queue.shift();
-                    fn();
-                }
-            }
-        }, true);
-
-        return function nextTick(fn) {
-            queue.push(fn);
-            window.postMessage('browserify-tick', '*');
-        };
-    }
-
-    return function nextTick(fn) {
-        setTimeout(fn, 0);
-    };
-})();
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-
-process.binding = function (name) {
-    if (name === 'evals') return (require)('vm')
-    else throw new Error('No such module. (Possibly not yet loaded)')
-};
-
-(function () {
-    var cwd = '/';
-    var path;
-    process.cwd = function () { return cwd };
-    process.chdir = function (dir) {
-        if (!path) path = require('path');
-        cwd = path.resolve(dir, cwd);
-    };
-})();
-
-});
-
-require.define("/node_modules/hyperscript/node_modules/hyperscript/package.json",function(require,module,exports,__dirname,__filename,process,global){module.exports = {}
-});
-
-require.define("/node_modules/hyperscript/index.js",function(require,module,exports,__dirname,__filename,process,global){;(function () {
-
-function h() {
-  var args = [].slice.call(arguments), e = null
-  function item (l) {
-    var r
-    function parseClass (string) {
-      var m = string.split(/([\.#]?[a-zA-Z0-9_-]+)/)
-      m.forEach(function (v) {
-        var s = v.substring(1,v.length)
-        if(!v) return 
-        if(!e)
-          e = document.createElement(v)
-        else if (v[0] === '.')
-          e.classList.add(s)
-        else if (v[0] === '#')
-          e.setAttribute('id', s)
-      })
-    }
-
-    if(l == null)
-      ;
-    else if('string' === typeof l) {
-      if(!e)
-        parseClass(l)
-      else
-        e.appendChild(r = document.createTextNode(l))
-    }
-    else if('number' === typeof l 
-      || 'boolean' === typeof l
-      || l instanceof Date 
-      || l instanceof RegExp ) {
-        e.appendChild(r = document.createTextNode(l.toString()))
-    }
-    //there might be a better way to handle this...
-    else if (Array.isArray(l))
-      l.forEach(item)
-    else if(l instanceof Node)
-      e.appendChild(r = l)
-    else if(l instanceof Text)
-      e.appendChild(r = l)
-    else if ('object' === typeof l) {
-      for (var k in l) {
-        if('function' === typeof l[k]) {
-          if(/^on\w+/.test(k)) {
-            e.addEventListener(k.substring(2), l[k])
-          } else {
-            e[k] = l[k]()
-            l[k](function (v) {
-              e[k] = v
-            })
-          }
-        }
-        else if(k === 'style') {
-          for (var s in l[k]) (function(s, v) {
-            if('function' === typeof v) {
-              e.style.setProperty(s, v())
-              v(function (val) {
-                e.style.setProperty(s, val)
-              })
-            } else
-              e.style.setProperty(s, l[k][s])
-          })(s, l[k][s])
-        } else
-          e[k] = l[k]
-      }
-    } else if ('function' === typeof l) {
-      //assume it's an observable!
-      var v = l()
-      e.appendChild(r = v instanceof Node ? v : document.createTextNode(v))
-
-      l(function (v) {
-        if(v instanceof Node && r.parentElement)
-          r.parentElement.replaceChild(v, r), r = v
-        else
-          r.textContent = v
-      })
-      
-    }
-
-    return r
-  }
-  while(args.length)
-    item(args.shift())
-
-  return e
-}
-
-if(typeof module === 'object')
- module.exports = h
-else
-  this.hyperscript = h
-})()
-
-});
-
-require.define("/tmp.js",function(require,module,exports,__dirname,__filename,process,global){var funx = [
-function () {
-var h = require('hyperscript')
-h('div#page',
-  h('div#header',
-    h('h1.classy', 'h', { style: {'background-color': '#22f'} })),
-  h('div#menu', { style: {'background-color': '#2f2'} },
-    h('ul',
-      h('li', 'one'),
-      h('li', 'two'),
-      h('li', 'three'))),
-    h('h2', 'content title',  { style: {'background-color': '#f22'} }),
-    h('p', 
-      "so it's just like a templating engine,\n",
-      "but easy to use inline with javascript\n"),
-    h('p', 
-      "the intension is for this to be used to create\n",
-      "reusable, interactive html widgets. "))
-},
-function () {
-var h = require('hyperscript')
-h('a', {href: 'https://npm.im/hyperscript'}, 'hyperscript')
-},
-function () {
-var h = require('hyperscript')
-h('a', {href: '#', 
-  onclick: function (e) {
-    alert('you are 1,000,000th visitor!')
-    e.preventDefault()
-  }
-}, 'click here to win a prize')
-},
-function () {
-var h = require('hyperscript')
-h('h1.fun', {style: {'font-family': 'Comic Sans MS'}}, 'Happy Birthday!')
-},
-function () {
-var h = require('hyperscript')
-var obj = {
-  a: 'Apple',
-  b: 'Banana',
-  c: 'Cherry',
-  d: 'Durian',
-  e: 'Elder Berry'
-}
-h('table',
-  h('tr', h('th', 'letter'), h('th', 'fruit')),
-  Object.keys(obj).map(function (k) {
-    return h('tr', 
-      h('th', k),
-      h('td', obj[k])
-    )
-  })
-)
-}
-];
-
-});
+require.define("/tmp.js",Function(['require','module','exports','__dirname','__filename','process','global'],"var funx = [\nfunction () {\nvar h = require('hyperscript')\nh('div#page',\n  h('div#header',\n    h('h1.classy', 'h', { style: {'background-color': '#22f'} })),\n  h('div#menu', { style: {'background-color': '#2f2'} },\n    h('ul',\n      h('li', 'one'),\n      h('li', 'two'),\n      h('li', 'three'))),\n    h('h2', 'content title',  { style: {'background-color': '#f22'} }),\n    h('p', \n      \"so it's just like a templating engine,\\n\",\n      \"but easy to use inline with javascript\\n\"),\n    h('p', \n      \"the intension is for this to be used to create\\n\",\n      \"reusable, interactive html widgets. \"))\n},\nfunction () {\nvar h = require('hyperscript')\nh('a', {href: 'https://npm.im/hyperscript'}, 'hyperscript')\n},\nfunction () {\nvar h = require('hyperscript')\nh('a', {href: '#', \n  onclick: function (e) {\n    alert('you are 1,000,000th visitor!')\n    e.preventDefault()\n  }\n}, 'click here to win a prize')\n},\nfunction () {\nvar h = require('hyperscript')\nh('h1.fun', {style: {'font-family': 'Comic Sans MS'}}, 'Happy Birthday!')\n},\nfunction () {\nvar h = require('hyperscript')\nvar obj = {\n  a: 'Apple',\n  b: 'Banana',\n  c: 'Cherry',\n  d: 'Durian',\n  e: 'Elder Berry'\n}\nh('table',\n  h('tr', h('th', 'letter'), h('th', 'fruit')),\n  Object.keys(obj).map(function (k) {\n    return h('tr', \n      h('th', k),\n      h('td', obj[k])\n    )\n  })\n)\n}\n];\n\n//@ sourceURL=/tmp.js"
+));
 require("/tmp.js");
 
 </script>
@@ -641,12 +303,8 @@ require("/tmp.js");
   <div id=centerer>
     <div class=container><div class=markdown>
       <h1>HyperScript</h1>
-<p>Create HyperText with JavaScript.
-
-</p>
-<p><a href="http://dominictarr.github.com/hyperscript">Interactive Demo</a>
-
-</p>
+<p>Create HyperText with JavaScript.</p>
+<p><a href="http://dominictarr.github.com/hyperscript">Interactive Demo</a></p>
 <h2>Example</h2>
 <pre><code class="lang-js">var h = require(&#39;hyperscript&#39;)
 h(&#39;div#page&#39;,
@@ -665,24 +323,16 @@ h(&#39;div#page&#39;,
       &quot;the intension is for this to be used to create\n&quot;,
       &quot;reusable, interactive html widgets. &quot;))</code></pre>
 <h2>h (tag, attrs, [text?, Elements?,...])</h2>
-<p>Create an <code>HTMLElement</code>. first argument must be the tag name.
-
-</p>
+<p>Create an <code>HTMLElement</code>. first argument must be the tag name.</p>
 <h3>classes &amp; id</h3>
 <p>If the tag name is of form <code>name.class1.class2#id</code> that is a short cut
-for setting the class and id.
-
-</p>
-<h3>attributes</h3>
-<p>If an <code>{}</code> object is passed in, it&#39;s values will be used to set attributes.
-
-</p>
+for setting the class and id.</p>
+<h3>Attributes</h3>
+<p>If an <code>{}</code> object is passed in, it&#39;s values will be used to set attributes.</p>
 <pre><code class="lang-js">var h = require(&#39;hyperscript&#39;)
 h(&#39;a&#39;, {href: &#39;https://npm.im/hyperscript&#39;}, &#39;hyperscript&#39;)</code></pre>
 <h3>events</h3>
-<p>If an attribute is a function, then it will be registered as an event listener.
-
-</p>
+<p>If an attribute is a function, then it will be registered as an event listener.</p>
 <pre><code class="lang-js">var h = require(&#39;hyperscript&#39;)
 h(&#39;a&#39;, {href: &#39;#&#39;, 
   onclick: function (e) {
@@ -691,32 +341,20 @@ h(&#39;a&#39;, {href: &#39;#&#39;,
   }
 }, &#39;click here to win a prize&#39;)</code></pre>
 <h3>styles</h3>
-<p>If an attribute has a style property, then that will be handled specially.
-
-</p>
+<p>If an attribute has a style property, then that will be handled specially.</p>
 <pre><code class="lang-js">var h = require(&#39;hyperscript&#39;)
 h(&#39;h1.fun&#39;, {style: {&#39;font-family&#39;: &#39;Comic Sans MS&#39;}}, &#39;Happy Birthday!&#39;)</code></pre>
-<p>You may pass in attributes in multiple positions, it&#39;s no problem!
-
-</p>
+<p>You may pass in attributes in multiple positions, it&#39;s no problem!</p>
 <h3>children - string</h3>
-<p>If an argument is a string, a TextNode is created in that position.
-
-</p>
+<p>If an argument is a string, a TextNode is created in that position.</p>
 <h3>children - HTMLElement</h3>
 <p>If a argument is a <code>Node</code> (or <code>HTMLElement</code>), for example, the return value of a call to <code>h</code>
-thats cool too.
-
-</p>
+thats cool too.</p>
 <h3>children - null.</h3>
-<p>This is just ignored.
-
-</p>
+<p>This is just ignored.</p>
 <h3>children - Array</h3>
 <p>Each item in the array is treated like a ordinary child. (string or HTMLElement)
-this is uesful when you want to iterate over an object:
-
-</p>
+this is uesful when you want to iterate over an object:</p>
 <pre><code>var h = require(&#39;hyperscript&#39;)
 var obj = {
   a: &#39;Apple&#39;,
@@ -735,8 +373,7 @@ h(&#39;table&#39;,
   })
 )</code></pre>
 <h2>License</h2>
-<p>MIT
-</p>
+<p>MIT</p>
 
     </div></div>
   </div>
