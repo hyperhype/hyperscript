@@ -1,5 +1,7 @@
 ;(function () {
 
+var ClassList = require("class-list")
+
 function h() {
   var args = [].slice.call(arguments), e = null
   function item (l) {
@@ -8,11 +10,11 @@ function h() {
       var m = string.split(/([\.#]?[a-zA-Z0-9_-]+)/)
       m.forEach(function (v) {
         var s = v.substring(1,v.length)
-        if(!v) return 
+        if(!v) return
         if(!e)
           e = document.createElement(v)
         else if (v[0] === '.')
-          e.classList.add(s)
+          ClassList(e).add(s)
         else if (v[0] === '#')
           e.setAttribute('id', s)
       })
@@ -26,9 +28,9 @@ function h() {
       else
         e.appendChild(r = document.createTextNode(l))
     }
-    else if('number' === typeof l 
+    else if('number' === typeof l
       || 'boolean' === typeof l
-      || l instanceof Date 
+      || l instanceof Date
       || l instanceof RegExp ) {
         e.appendChild(r = document.createTextNode(l.toString()))
     }
@@ -75,7 +77,7 @@ function h() {
         else
           r.textContent = v
       })
-      
+
     }
 
     return r
