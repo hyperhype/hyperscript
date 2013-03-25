@@ -11,5 +11,8 @@
   "devDependencies": {
     "html-element": "~1.1.0",
     "tape": "~0.2.2"
+  },
+  "dependencies": {
+    "class-list": "0.0.1"
   }
 }
