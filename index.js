@@ -2,13 +2,22 @@
 
 var ClassList = require("class-list")
 
+function forEach (arr, fn) {
+  if (arr.forEach) return arr.forEach(fn)
+  for (var i = 0; i < arr.length; i++) fn(arr[i], i)
+}
+
+function isArray (arr) {
+  return Object.prototype.toString.call(arr) == '[object Array]'
+}
+
 function h() {
   var args = [].slice.call(arguments), e = null
   function item (l) {
     var r
     function parseClass (string) {
       var m = string.split(/([\.#]?[a-zA-Z0-9_-]+)/)
-      m.forEach(function (v) {
+      forEach(m, function (v) {
         var s = v.substring(1,v.length)
         if(!v) return
         if(!e)
@@ -35,8 +44,8 @@ function h() {
         e.appendChild(r = document.createTextNode(l.toString()))
     }
     //there might be a better way to handle this...
-    else if (Array.isArray(l))
-      l.forEach(item)
+    else if (isArray(l))
+      forEach(l, item)
     else if(l instanceof Node)
       e.appendChild(r = l)
     else if(l instanceof Text)
