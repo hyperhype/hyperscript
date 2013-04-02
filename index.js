@@ -93,7 +93,7 @@ function h() {
 
 function isNode (el) {
   return el instanceof HTMLElement
-      || el instanceof TextNode
+      || el instanceof Text
 }
 
 function forEach (arr, fn) {
