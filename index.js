@@ -1,5 +1,3 @@
-;(function () {
-
 /*!
  * Cross-Browser Split 1.1.1
  * Copyright 2007-2012 Steven Levithan <stevenlevithan.com>
@@ -216,8 +214,4 @@ function h() {
   return e
 }
 
-if(typeof module === 'object')
- module.exports = h
-else
-  this.hyperscript = h
-})()
+module.exports = h
