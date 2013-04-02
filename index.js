@@ -92,8 +92,9 @@ function h() {
 }
 
 function isNode (el) {
-  return el instanceof HTMLElement
-      || el instanceof Text
+  return typeof Node != 'undefined'
+    ? el instanceof Node
+    : el instanceof Element
 }
 
 function forEach (arr, fn) {
