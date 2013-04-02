@@ -13,7 +13,7 @@
     "tape": "~0.2.2"
   },
   "dependencies": {
-    "class-list": "0.0.1",
+    "class-list": "~0.1.0",
     "browser-split": "0.0.0"
   }
 }
