@@ -38,7 +38,7 @@ function h() {
     //there might be a better way to handle this...
     else if (isArray(l))
       forEach(l, item)
-    else if(l instanceof Element)
+    else if(isNode(l))
       e.appendChild(r = l)
     else if(l instanceof Text)
       e.appendChild(r = l)
@@ -72,10 +72,10 @@ function h() {
     } else if ('function' === typeof l) {
       //assume it's an observable!
       var v = l()
-      e.appendChild(r = v instanceof Element ? v : document.createTextNode(v))
+      e.appendChild(r = isNode(v) ? v : document.createTextNode(v))
 
       l(function (v) {
-        if(v instanceof Element && r.parentElement)
+        if(isNode(v) && r.parentElement)
           r.parentElement.replaceChild(v, r), r = v
         else
           r.textContent = v
@@ -89,6 +89,11 @@ function h() {
     item(args.shift())
 
   return e
+}
+
+function isNode (el) {
+  return el instanceof HTMLElement
+      || el instanceof TextNode
 }
 
 function forEach (arr, fn) {
