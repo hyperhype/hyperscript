@@ -1,22 +1,14 @@
-;(function () {
+var split = require('browser-split')
+var ClassList = require('class-list')
 
-var ClassList = require("class-list")
-
-function forEach (arr, fn) {
-  if (arr.forEach) return arr.forEach(fn)
-  for (var i = 0; i < arr.length; i++) fn(arr[i], i)
-}
-
-function isArray (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]'
-}
+module.exports = h
 
 function h() {
   var args = [].slice.call(arguments), e = null
   function item (l) {
     var r
     function parseClass (string) {
-      var m = string.split(/([\.#]?[a-zA-Z0-9_-]+)/)
+      var m = split(string, /([\.#]?[a-zA-Z0-9_-]+)/)
       forEach(m, function (v) {
         var s = v.substring(1,v.length)
         if(!v) return
@@ -46,7 +38,7 @@ function h() {
     //there might be a better way to handle this...
     else if (isArray(l))
       forEach(l, item)
-    else if(l instanceof Node)
+    else if(isNode(l))
       e.appendChild(r = l)
     else if(l instanceof Text)
       e.appendChild(r = l)
@@ -54,7 +46,9 @@ function h() {
       for (var k in l) {
         if('function' === typeof l[k]) {
           if(/^on\w+/.test(k)) {
-            e.addEventListener(k.substring(2), l[k])
+            e.addEventListener
+              ? e.addEventListener(k.substring(2), l[k])
+              : e.attachEvent(k, l[k])
           } else {
             e[k] = l[k]()
             l[k](function (v) {
@@ -78,10 +72,10 @@ function h() {
     } else if ('function' === typeof l) {
       //assume it's an observable!
       var v = l()
-      e.appendChild(r = v instanceof Node ? v : document.createTextNode(v))
+      e.appendChild(r = isNode(v) ? v : document.createTextNode(v))
 
       l(function (v) {
-        if(v instanceof Node && r.parentElement)
+        if(isNode(v) && r.parentElement)
           r.parentElement.replaceChild(v, r), r = v
         else
           r.textContent = v
@@ -97,8 +91,17 @@ function h() {
   return e
 }
 
-if(typeof module === 'object')
- module.exports = h
-else
-  this.hyperscript = h
-})()
+function isNode (el) {
+  return typeof Node != 'undefined'
+    ? el instanceof Node
+    : el instanceof Element
+}
+
+function forEach (arr, fn) {
+  if (arr.forEach) return arr.forEach(fn)
+  for (var i = 0; i < arr.length; i++) fn(arr[i], i)
+}
+
+function isArray (arr) {
+  return Object.prototype.toString.call(arr) == '[object Array]'
+}
