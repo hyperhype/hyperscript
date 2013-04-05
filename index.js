@@ -1,5 +1,6 @@
 var split = require('browser-split')
 var ClassList = require('class-list')
+var DataSet = require('data-set')
 
 module.exports = h
 
@@ -66,8 +67,11 @@ function h() {
             } else
               e.style.setProperty(s, l[k][s])
           })(s, l[k][s])
-        } else
+        } else if (k.substr(0, 5) === "data-") {
+          DataSet(e)[k.substr(5)] = l[k]
+        } else {
           e[k] = l[k]
+        }
       }
     } else if ('function' === typeof l) {
       //assume it's an observable!
@@ -92,9 +96,7 @@ function h() {
 }
 
 function isNode (el) {
-  return typeof Node != 'undefined'
-    ? el instanceof Node
-    : el instanceof Element
+  return el.nodeName && el.nodeType
 }
 
 function forEach (arr, fn) {
