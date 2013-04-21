@@ -96,7 +96,7 @@ function h() {
 }
 
 function isNode (el) {
-  return el.nodeName && el.nodeType
+  return el && el.nodeName && el.nodeType
 }
 
 function forEach (arr, fn) {
