@@ -1,6 +1,6 @@
 # HyperScript
 
-Create HyperText with JavaScript.
+Create HyperText with JavaScript, on client or server.
 
 [Interactive Demo](http://dominictarr.github.com/hyperscript)
 
@@ -23,6 +23,17 @@ h('div#page',
     h('p', 
       "the intension is for this to be used to create\n",
       "reusable, interactive html widgets. "))
+```
+
+## on the server
+
+you can still use hyperscript on the server,
+the limitation is that events don't make sense any more,
+but you can use it to generate html:
+
+``` js
+console.log(h('h1', 'hello!').outerHTML)
+=> '<h1>hello!</h1>'
 ```
 
 ## h (tag, attrs, [text?, Elements?,...])
