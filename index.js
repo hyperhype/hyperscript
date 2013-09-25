@@ -49,7 +49,7 @@ function h() {
         if('function' === typeof l[k]) {
           if(/^on\w+/.test(k)) {
             e.addEventListener
-              ? e.addEventListener(k.substring(2), l[k])
+              ? e.addEventListener(k.substring(2), l[k], false)
               : e.attachEvent(k, l[k])
           } else {
             e[k] = l[k]()
