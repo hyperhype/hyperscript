@@ -1,6 +1,7 @@
 var split = require('browser-split')
 var ClassList = require('class-list')
 var DataSet = require('data-set')
+require('html-element')
 
 module.exports = h
 
