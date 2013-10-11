@@ -1,0 +1,10 @@
+framework: tap
+src_files:
+- index.js
+- test/index.js
+serve_files:
+- __tests.js
+before_tests: browserify test -o __tests.js
+on_exit: rm __tests.js
+launch_in_dev:
+- chrome
