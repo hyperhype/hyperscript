@@ -10,7 +10,10 @@
   "license": "MIT",
   "devDependencies": {
     "html-element": "~1.1.0",
-    "tape": "~0.2.2"
+    "tape": "~0.2.2",
+    "observable": "~2.1.2",
+    "ispy": "~0.1.2",
+    "simulate": "0.0.3"
   },
   "dependencies": {
     "class-list": "~0.1.0",

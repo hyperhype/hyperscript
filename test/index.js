@@ -1,8 +1,91 @@
 
-var tape = require('tape')
+var test = require('tape')
 var h    = require('../')
+var o    = require('observable')
+var spy  = require('ispy')
+var simu = require('simulate')
 
-tape('simple', function (t) {
-  t.equal(h('h1').outerHTML, '<h1>\n\n</h1>')
+test('simple', function (t) {
+  t.equal(h('h1').outerHTML, '<h1></h1>')
+  t.equal(h('h1', 'hello world').outerHTML, '<h1>hello world</h1>')
+  t.end()
+})
+
+test('nested', function(t) {
+  t.equal(h('div',
+    h('h1', 'Title'),
+    h('p', 'Paragraph')
+  ).outerHTML, '<div><h1>Title</h1><p>Paragraph</p></div>')
+  t.end()
+})
+
+test('arrays for nesting is ok', function(t){
+  t.equal(h('div',
+    [h('h1', 'Title'), h('p', 'Paragraph')]
+  ).outerHTML, '<div><h1>Title</h1><p>Paragraph</p></div>')
+  t.end()
+})
+
+test('can use id selector', function(t){
+  t.equal(h('div#frame').outerHTML, '<div id="frame"></div>')
+  t.end()
+})
+
+test('can use class selector', function(t){
+  t.equal(h('div.panel').outerHTML, '<div class="panel"></div>')
+  t.end()
+})
+
+test('can set properties', function(t){
+  var a = h('a', {href: 'http://google.com'})
+  t.equal(a.href, 'http://google.com/')
+  var checkbox = h('input', {name: 'yes', type: 'checkbox'})
+  t.equal(checkbox.outerHTML, '<input name="yes" type="checkbox">')
+  t.end()
+})
+
+test('registers event handlers', function(t){
+  var onClick = spy()
+  var p = h('p', {onclick: onClick}, 'something')
+  simu.click(p)
+  t.assert(onClick.called)
+  t.end()
+})
+
+test('sets styles', function(t){
+  var div = h('div', {style: {'color': 'red'}})
+  t.equal(div.style.color, 'red')
+  t.end()
+})
+
+test('sets data attributes', function(t){
+  var div = h('div', {'data-value': 5})
+  t.equal(div.getAttribute('data-value'), '5') // failing for IE9
+  t.end()
+})
+
+test('boolean, number, date, regex get to-string\'ed', function(t){
+  var e = h('p', true, false, 4, new Date('Mon Jan 15 2001'), /hello/)
+  t.assert(e.outerHTML.match(/<p>truefalse4Mon Jan 15.+2001.*\/hello\/<\/p>/))
+  t.end()
+})
+
+test('observable content', function(t){
+  var title = o()
+  title('Welcome to HyperScript!')
+  var h1 = h('h1', title)
+  t.equal(h1.outerHTML, '<h1>Welcome to HyperScript!</h1>')
+  title('Leave, creep!')
+  t.equal(h1.outerHTML, '<h1>Leave, creep!</h1>')
+  t.end()
+})
+
+test('observable property', function(t){
+  var checked = o()
+  checked(true)
+  var checkbox = h('input', {type: 'checkbox', checked: checked})
+  t.equal(checkbox.checked, true)
+  checked(false)
+  t.equal(checkbox.checked, false)
   t.end()
 })
