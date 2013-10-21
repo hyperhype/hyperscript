@@ -59,15 +59,19 @@ function h() {
           }
         }
         else if(k === 'style') {
-          for (var s in l[k]) (function(s, v) {
-            if('function' === typeof v) {
-              e.style.setProperty(s, v())
-              v(function (val) {
-                e.style.setProperty(s, val)
-              })
-            } else
-              e.style.setProperty(s, l[k][s])
-          })(s, l[k][s])
+          if('string' === typeof l[k]) {
+            e.style.cssText = l[k]
+          } else {
+            for (var s in l[k]) (function(s, v) {
+              if('function' === typeof v) {
+                e.style.setProperty(s, v())
+                v(function (val) {
+                  e.style.setProperty(s, val)
+                })
+              } else
+                e.style.setProperty(s, l[k][s])
+            })(s, l[k][s])
+          }
         } else if (k.substr(0, 5) === "data-") {
           DataSet(e)[k.substr(5)] = l[k]
         } else {
