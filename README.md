@@ -80,6 +80,13 @@ var h = require('hyperscript')
 h('h1.fun', {style: {'font-family': 'Comic Sans MS'}}, 'Happy Birthday!')
 ```
 
+or as a string
+
+``` js
+var h = require('hyperscript')
+h('h1.fun', {style: 'font-family: Comic Sans MS'}}, 'Happy Birthday!')
+```
+
 You may pass in attributes in multiple positions, it's no problem!
 
 ### children - string
@@ -118,6 +125,28 @@ h('table',
     )
   })
 )
+```
+
+### Cleaning Up
+
+If you need to clean up a widget created using hyperscript - deregistering all its event handlers and observable listeners, you can use `context()`.
+
+``` js
+var h = require('hyperscript').context()
+var o = require('observable')
+var text = o()
+text('click here to win a prize')
+h('a', {href: '#', 
+  onclick: function (e) {
+    text('you are 1,000,000th visitor!')
+    e.preventDefault()
+  }
+}, text)
+
+// then if you want to remove this widget from the page
+// to cleanup
+h.cleanup()
+
 ```
 
 ## License
