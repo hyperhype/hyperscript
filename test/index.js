@@ -58,6 +58,12 @@ test('sets styles', function(t){
   t.end()
 })
 
+test('sets styles as text', function(t){
+  var div = h('div', {style: 'color: red'})
+  t.equal(div.style.color, 'red')
+  t.end()
+})
+
 test('sets data attributes', function(t){
   var div = h('div', {'data-value': 5})
   t.equal(div.getAttribute('data-value'), '5') // failing for IE9
@@ -87,5 +93,51 @@ test('observable property', function(t){
   t.equal(checkbox.checked, true)
   checked(false)
   t.equal(checkbox.checked, false)
+  t.end()
+})
+
+test('observable style', function(t){
+  var color = o()
+  color('red')
+  var div = h('div', {style: {'color': color}})
+  t.equal(div.style.color, 'red')
+  color('blue')
+  t.equal(div.style.color, 'blue')
+  t.end()
+})
+
+test('context basic', function(t){
+  var _h = h.context()
+  var p = _h('p', 'hello')
+  t.equal(p.outerHTML, '<p>hello</p>')
+  _h.cleanup()
+  t.end()
+})
+
+test('context cleanup removes observable listeners', function(t){
+  var _h = h.context()
+  var text = o()
+  text('hello')
+  var color = o()
+  color('red')
+  var className = o()
+  className('para')
+  var p = _h('p', {style: {color: color}, className: className}, text)
+  t.equal(p.outerHTML, '<p class=\"para\" style=\"color: red;\">hello</p>')
+  _h.cleanup()
+  color('blue')
+  text('world')
+  className('section')
+  t.equal(p.outerHTML, '<p class=\"para\" style=\"color: red;\">hello</p>')
+  t.end()
+})
+
+test('context cleanup removes event handlers', function(t){
+  var _h = h.context()
+  var onClick = spy()
+  var button = _h('button', 'Click me!', {onclick: onClick})
+  _h.cleanup()
+  simu.click(button)
+  t.assert(!onClick.called)
   t.end()
 })
