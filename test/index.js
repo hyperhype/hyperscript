@@ -36,6 +36,12 @@ test('can use class selector', function(t){
   t.end()
 })
 
+test('can default element types', function(t){
+  t.equal(h('.panel').outerHTML, '<div class="panel"></div>')
+  t.equal(h('#frame').outerHTML, '<div id="frame"></div>')
+  t.end()
+})
+
 test('can set properties', function(t){
   var a = h('a', {href: 'http://google.com'})
   t.equal(a.href, 'http://google.com/')
