@@ -41,7 +41,8 @@ console.log(h('h1', 'hello!').outerHTML)
 
 ## h (tag, attrs, [text?, Elements?,...])
 
-Create an `HTMLElement`. first argument must be the tag name.
+Create an `HTMLElement`. The first argument must be the tag name, you may use a
+fully qualified tagname for building e.g. XML documents: `h('ns:tag').
 
 ### classes & id
 
