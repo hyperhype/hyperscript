@@ -12,7 +12,7 @@ function context () {
     function item (l) {
       var r
       function parseClass (string) {
-        var m = split(string, /([\.#]?[a-zA-Z0-9_-]+)/)
+        var m = split(string, /([\.#]?[a-zA-Z0-9_:-]+)/)
         if(/^\.|#/.test(m[1]))
           e = document.createElement('div')
         forEach(m, function (v) {
