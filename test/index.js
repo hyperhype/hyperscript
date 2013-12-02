@@ -26,6 +26,11 @@ test('arrays for nesting is ok', function(t){
   t.end()
 })
 
+test('can use namespace in name', function(t){
+  t.equal(h('myns:mytag').outerHTML, '<myns:mytag></myns:mytag>');
+  t.end()
+})
+
 test('can use id selector', function(t){
   t.equal(h('div#frame').outerHTML, '<div id="frame"></div>')
   t.end()
