@@ -149,6 +149,6 @@ test('context cleanup removes event handlers', function(t){
   var button = _h('button', 'Click me!', {onclick: onClick})
   _h.cleanup()
   simu.click(button)
-  t.assert(!onClick.called)
+  t.assert(!onClick.called, 'click listener was not triggered')
   t.end()
 })
