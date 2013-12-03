@@ -19,7 +19,8 @@
     "class-list": "~0.1.0",
     "browser-split": "0.0.0",
     "data-set": "~0.2.2",
-    "html-element": "~1.2.8"
+    "html-element": "~1.2.8",
+    "tape": "~2.3.0"
   },
   "browser": {
     "html-element": false
