@@ -157,3 +157,10 @@ test('context cleanup removes event handlers', function(t){
   t.assert(!onClick.called)
   t.end()
 })
+
+test('can serialize data- attributes', function (t) {
+  var p = h('p', { 'data-foo': 'bar' })
+  t.equal(p, '<p data-foo=\"bar\"></p>')
+
+  t.end()
+})
