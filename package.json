@@ -10,7 +10,7 @@
   "license": "MIT",
   "devDependencies": {
     "html-element": "~1.1.0",
-    "tape": "~0.2.2",
+    "tape": "~2.12.0",
     "observable": "~2.1.2",
     "ispy": "~0.1.2",
     "simulate": "0.0.3"
@@ -18,7 +18,7 @@
   "dependencies": {
     "class-list": "~0.1.0",
     "browser-split": "0.0.0",
-    "data-set": "~0.2.2",
+    "data-set": "^3.0.0",
     "html-element": "~1.2.8"
   },
   "browser": {
