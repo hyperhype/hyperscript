@@ -4,6 +4,7 @@ var h    = require('../')
 var o    = require('observable')
 var spy  = require('ispy')
 var simu = require('simulate')
+var DataSet = require('data-set')
 
 test('simple', function (t) {
   t.equal(h('h1').outerHTML, '<h1></h1>')
@@ -76,8 +77,8 @@ test('sets styles as text', function(t){
 })
 
 test('sets data attributes', function(t){
-  var div = h('div', {'data-value': 5})
-  t.equal(div.getAttribute('data-value'), '5') // failing for IE9
+  var div = h('div', {'data-value': '5'})
+  t.equal(DataSet(div).value, '5') // failing for IE9
   t.end()
 })
 
@@ -134,12 +135,16 @@ test('context cleanup removes observable listeners', function(t){
   var className = o()
   className('para')
   var p = _h('p', {style: {color: color}, className: className}, text)
-  t.equal(p.outerHTML, '<p class=\"para\" style=\"color: red;\">hello</p>')
+  t.ok(p.outerHTML.indexOf('class=\"para\"'))
+  t.ok(p.outerHTML.indexOf('style=\"color: red;\"'))
+  t.ok(p.outerHTML.indexOf('hello</p>'))
   _h.cleanup()
   color('blue')
   text('world')
   className('section')
-  t.equal(p.outerHTML, '<p class=\"para\" style=\"color: red;\">hello</p>')
+  t.ok(p.outerHTML.indexOf('class=\"para\"'))
+  t.ok(p.outerHTML.indexOf('style=\"color: red;\"'))
+  t.ok(p.outerHTML.indexOf('hello</p>'))
   t.end()
 })
 
