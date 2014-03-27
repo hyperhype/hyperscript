@@ -1,6 +1,5 @@
 var split = require('browser-split')
 var ClassList = require('class-list')
-var DataSet = require('data-set')
 require('html-element')
 
 function context () {
@@ -87,7 +86,7 @@ function context () {
               })(s, l[k][s])
             }
           } else if (k.substr(0, 5) === "data-") {
-            DataSet(e)[k.substr(5)] = l[k]
+            e.setAttribute(k, l[k])
           } else {
             e[k] = l[k]
           }
