@@ -55,12 +55,20 @@ If the tag name begins with a class or id, it defaults to a `<div>`.
 
 ### Attributes
 
-If an `{}` object is passed in, it's values will be used to set attributes.
+If an `{}` object is passed in it will be used to set attributes.
 
 ``` js
 var h = require('hyperscript')
 h('a', {href: 'https://npm.im/hyperscript'}, 'hyperscript')
 ```
+
+Note that hyperscript sets properties on the DOM element object, not
+attributes on the HTML element. This makes for better consistency across
+browsers and a nicer API for booleans. There are some gotchas, however.
+Attributes such as `colspan` are camel cased to `colSpan`, and `for` on the
+label element is `htmlFor` to avoid collision with the language keyword. See the
+[DOM HTML specification](http://www.w3.org/TR/DOM-Level-2-HTML/html.html)
+for details.
 
 ### events
 
