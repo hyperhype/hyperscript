@@ -7,6 +7,9 @@ Create HyperText with JavaScript, on client or server.
 
 [Interactive Demo](http://dominictarr.github.com/hyperscript)
 
+See also [mercury](https://github.com/Raynos/mercury) is a modular ui
+framework influenced by hyperscript but much more heavily optimized.
+
 ## Example
 
 ``` js
