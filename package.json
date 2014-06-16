@@ -9,7 +9,7 @@
   "author": "'Dominic Tarr' <dominic.tarr@gmail.com> (http://dominictarr.com)",
   "license": "MIT",
   "devDependencies": {
-    "tape": "~0.2.2",
+    "tape": "~2.13.3",
     "observable": "~2.1.2",
     "ispy": "~0.1.2",
     "simulate": "0.0.3"
@@ -23,7 +23,7 @@
     "html-element": false
   },
   "scripts": {
-    "test": "set -e; for t in test/*.js; do node $t; done"
+    "test": "tape test/*.js"
   },
   "testling": {
     "files": "test/*.js",
