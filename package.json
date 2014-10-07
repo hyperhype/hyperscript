@@ -17,7 +17,7 @@
   "dependencies": {
     "class-list": "~0.1.0",
     "browser-split": "0.0.0",
-    "html-element": "~1.2.8"
+    "html-element": "~1.3.0"
   },
   "browser": {
     "html-element": false
