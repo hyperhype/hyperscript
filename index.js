@@ -116,7 +116,7 @@ function context () {
     for (var i = 0; i < cleanupFuncs.length; i++){
       cleanupFuncs[i]()
     }
-    cleanupFuncs.length = 
+    cleanupFuncs.length = 0
   }
 
   return h
