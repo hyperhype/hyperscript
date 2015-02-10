@@ -165,6 +165,11 @@ h.cleanup()
 
 ```
 
+## Tools
+
+* [html2hscript](https://github.com/twilson63/html2hscript) - Parse HTML into hyperscript
+* [html2hscript.herokuapp.com](http://html2hscript.herokuapp.com/) - Online Tool that converts html snippets to hyperscript
+
 ## License
 
 MIT
