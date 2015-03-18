@@ -23,10 +23,10 @@ h('div#page',
       h('li', 'two'),
       h('li', 'three'))),
     h('h2', 'content title',  { style: {'background-color': '#f22'} }),
-    h('p', 
+    h('p',
       "so it's just like a templating engine,\n",
       "but easy to use inline with javascript\n"),
-    h('p', 
+    h('p',
       "the intension is for this to be used to create\n",
       "reusable, interactive html widgets. "))
 ```
@@ -79,7 +79,7 @@ If an attribute is a function, then it will be registered as an event listener.
 
 ``` js
 var h = require('hyperscript')
-h('a', {href: '#', 
+h('a', {href: '#',
   onclick: function (e) {
     alert('you are 1,000,000th visitor!')
     e.preventDefault()
@@ -135,7 +135,7 @@ var obj = {
 h('table',
   h('tr', h('th', 'letter'), h('th', 'fruit')),
   Object.keys(obj).map(function (k) {
-    return h('tr', 
+    return h('tr',
       h('th', k),
       h('td', obj[k])
     )
@@ -152,7 +152,7 @@ var h = require('hyperscript').context()
 var o = require('observable')
 var text = o()
 text('click here to win a prize')
-h('a', {href: '#', 
+h('a', {href: '#',
   onclick: function (e) {
     text('you are 1,000,000th visitor!')
     e.preventDefault()
@@ -169,6 +169,7 @@ h.cleanup()
 
 * [html2hscript](https://github.com/twilson63/html2hscript) - Parse HTML into hyperscript
 * [html2hscript.herokuapp.com](http://html2hscript.herokuapp.com/) - Online Tool that converts html snippets to hyperscript
+* [html2hyperscript](https://github.com/unframework/html2hyperscript) - Original commandline utility to convert legacy HTML markup into hyperscript
 
 ## License
 
