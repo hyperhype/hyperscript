@@ -121,7 +121,7 @@ This is just ignored.
 ### children - Array
 
 Each item in the array is treated like a ordinary child. (string or HTMLElement)
-this is uesful when you want to iterate over an object:
+this is useful when you want to iterate over an object:
 
 ``` js
 var h = require('hyperscript')
