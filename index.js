@@ -94,7 +94,7 @@ function context () {
             }
           } else if(k === 'attrs') {
             for (var v in l[k]) {
-              e.setAttribute(v, l[k][v]);
+              e.setAttribute(v, l[k][v])
             }
           }
           else if (k.substr(0, 5) === "data-") {
