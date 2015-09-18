@@ -152,3 +152,9 @@ test('context cleanup removes event handlers', function(t){
   t.assert(!onClick.called, 'click listener was not triggered')
   t.end()
 })
+
+test('unicode selectors', function (t) {
+  t.equal(h('.⛄').outerHTML, '<div class="⛄"></div>')
+  t.equal(h('span#⛄').outerHTML, '<span id="⛄"></span>')
+  t.end()
+})
