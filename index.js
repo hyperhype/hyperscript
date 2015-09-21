@@ -11,6 +11,10 @@ function context () {
     function item (l) {
       var r
       function parseClass (string) {
+        // Our minimal parser doesn’t understand escaping CSS special
+        // characters like `#`. Don’t use them. More reading:
+        // https://mathiasbynens.be/notes/css-escapes .
+
         var m = split(string, /([\.#]?[^\s#.]+)/)
         if(/^\.|#/.test(m[1]))
           e = document.createElement('div')
