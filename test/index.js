@@ -158,3 +158,12 @@ test('unicode selectors', function (t) {
   t.equal(h('span#⛄').outerHTML, '<span id="⛄"></span>')
   t.end()
 })
+
+test('create documentFragment', function(t) {
+  var tree = h([
+    h('div.abc'),
+    h('div.def')
+  ]);
+  t.equal(tree.nodeName, '#document-fragment');
+  t.end();
+})
