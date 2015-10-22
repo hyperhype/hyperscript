@@ -135,10 +135,6 @@ function isNode (el) {
   return el && el.nodeName && el.nodeType
 }
 
-function isText (el) {
-  return el && el.nodeName === '#text' && el.nodeType == 3
-}
-
 function forEach (arr, fn) {
   if (arr.forEach) return arr.forEach(fn)
   for (var i = 0; i < arr.length; i++) fn(arr[i], i)
