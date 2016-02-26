@@ -38,6 +38,20 @@ function context () {
         else
           e.appendChild(r = document.createTextNode(l))
       }
+      else if(l instanceof String) {
+        // this may be 'trusted' HTML
+        if(e && l.$trusted) {
+          // assume trusted HTML
+          e.innerHTML = l.toString()
+        }
+        else {
+          // handle as we would a plain string
+          if(!e)
+            parseClass(l.toString())
+          else
+            e.appendChild(r = document.createTextNode(l.toString()))
+        }
+      }
       else if('number' === typeof l
         || 'boolean' === typeof l
         || l instanceof Date
@@ -123,6 +137,14 @@ function context () {
       cleanupFuncs[i]()
     }
     cleanupFuncs.length = 0
+  }
+
+  // Make a string that is recognized as trusted html
+  // (Uses mithril's conventions)
+  h.trust = function (html) {
+    var s = new String(html)
+    s.$trusted = true
+    return s
   }
 
   return h
