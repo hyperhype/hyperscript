@@ -20,12 +20,12 @@ document.body.appendChild(
         h('li', 'three'))),
     h('div#content', {style: {float: 'left'} },
       h('h2', 'content title'),
-      h('p', 
+      h('p',
         "so it's just like a templating engine,\n",
         "but easy to use inline with javascript\n"),
-      h('p', 
+      h('p',
         "the intension is for this to be used to create\n",
-        "reusable, interactive html widgets. ")))
+        h.trust("<em>reusable</em>, <strong>interactive</strong> html widgets. "))))
 )
 
 </script>
