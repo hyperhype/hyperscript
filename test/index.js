@@ -158,3 +158,11 @@ test('unicode selectors', function (t) {
   t.equal(h('span#⛄').outerHTML, '<span id="⛄"></span>')
   t.end()
 })
+
+test('trust', function (t) {
+  t.equal(
+    h('p', h.trust('<em>hello</em> <strong>world</strong>')).outerHTML,
+    '<p><em>hello</em> <strong>world</strong></p>'
+  )
+  t.end()
+})
