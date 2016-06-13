@@ -100,7 +100,7 @@ or as a string
 
 ``` js
 var h = require('hyperscript')
-h('h1.fun', {style: 'font-family: Comic Sans MS'}}, 'Happy Birthday!')
+h('h1.fun', {style: 'font-family: Comic Sans MS'}, 'Happy Birthday!')
 ```
 
 You may pass in attributes in multiple positions, it's no problem!
