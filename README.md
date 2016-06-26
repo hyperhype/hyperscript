@@ -164,14 +164,18 @@ h('a', {href: '#',
 h.cleanup()
 
 ```
-
-## Tools
+## Ecosystem
 
 * [html2hscript](https://github.com/twilson63/html2hscript) - Parse HTML into hyperscript
 * [dom2hscript](https://github.com/AkeemMcLennon/dom2hscript) - Frontend library for parsing HTML into hyperscript using the browser's built in parser.
 * [html2hscript.herokuapp.com](http://html2hscript.herokuapp.com/) - Online Tool that converts html snippets to hyperscript
 * [html2hyperscript](https://github.com/unframework/html2hyperscript) - Original commandline utility to convert legacy HTML markup into hyperscript
+* [hyperscript-helpers](https://github.com/ohanhi/hyperscript-helpers) - write `div(h1('hello')` instead of `h('div', h('h1', 'hello'))`
+* [react-hyperscript](https://github.com/mlmorg/react-hyperscript)  - use hyperscript with React.
 
 ## License
 
 MIT
+
+
+
