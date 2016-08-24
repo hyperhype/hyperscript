@@ -1,6 +1,9 @@
 var split = require('browser-split')
 var ClassList = require('class-list')
-require('html-element/global-shim')
+var htmlElement = require('html-element');
+
+var document = htmlElement.document;
+var Text = htmlElement.Text;
 
 function context () {
 
