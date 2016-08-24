@@ -1,6 +1,6 @@
 var split = require('browser-split')
 var ClassList = require('class-list')
-require('html-element')
+require('html-element/global-shim')
 
 function context () {
 
