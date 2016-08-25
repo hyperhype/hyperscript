@@ -1,9 +1,9 @@
 var split = require('browser-split')
 var ClassList = require('class-list')
-var htmlElement = require('html-element');
 
-var document = htmlElement.document || window.document;
-var Text = htmlElement.Text || window.Text;
+var w = typeof window === 'undefined' ? require('html-element') : window
+var document = w.document
+var Text = w.Text
 
 function context () {
 
@@ -156,3 +156,5 @@ function forEach (arr, fn) {
 function isArray (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]'
 }
+
+
