@@ -2,8 +2,8 @@ var split = require('browser-split')
 var ClassList = require('class-list')
 var htmlElement = require('html-element');
 
-var document = htmlElement.document;
-var Text = htmlElement.Text;
+var document = htmlElement.document || window.document;
+var Text = htmlElement.Text || window.Text;
 
 function context () {
 
