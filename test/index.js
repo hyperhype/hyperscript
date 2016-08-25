@@ -1,3 +1,4 @@
+global.document = require('html-element').document;
 
 var test = require('tape')
 var h    = require('../')
