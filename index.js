@@ -91,10 +91,20 @@ function context () {
                     e.style.setProperty(s, val)
                   }))
                 } else
-                  e.style.setProperty(s, l[k][s])
+                  var match = l[k][s].match(/(.*)\W+!important\W*$/);
+                  if (match) {
+                    e.style.setProperty(s, match[1], 'important')
+                  } else {
+                    e.style.setProperty(s, l[k][s])
+                  }
               })(s, l[k][s])
             }
-          } else if (k.substr(0, 5) === "data-") {
+          } else if(k === 'attrs') {
+            for (var v in l[k]) {
+              e.setAttribute(v, l[k][v])
+            }
+          }
+          else if (k.substr(0, 5) === "data-") {
             e.setAttribute(k, l[k])
           } else {
             e[k] = l[k]
