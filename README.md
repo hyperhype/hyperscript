@@ -27,14 +27,14 @@ h('div#page',
       "so it's just like a templating engine,\n",
       "but easy to use inline with javascript\n"),
     h('p',
-      "the intension is for this to be used to create\n",
+      "the intention is for this to be used to create\n",
       "reusable, interactive html widgets. "))
 ```
 
 ## on the server
 
 you can still use hyperscript on the server,
-the limitation is that events don't make sense any more,
+the limitation is that events don't make sense anymore,
 but you can use it to generate html:
 
 ``` js
@@ -49,7 +49,7 @@ fully qualified tagname for building e.g. XML documents: `h('ns:tag').
 
 ### classes & id
 
-If the tag name is of form `name.class1.class2#id` that is a short cut
+If the tag name is of form `name.class1.class2#id` that is a shortcut
 for setting the class and id.
 
 ### default tag name
@@ -112,7 +112,7 @@ If an argument is a string, a TextNode is created in that position.
 ### children - HTMLElement
 
 If a argument is a `Node` (or `HTMLElement`), for example, the return value of a call to `h`
-thats cool too.
+that's cool, too.
 
 ### children - null.
 
