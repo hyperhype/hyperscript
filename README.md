@@ -5,7 +5,7 @@ Create HyperText with JavaScript, on client or server.
 [![testling badge](https://ci.testling.com/hyperhype/hyperscript.png)]
   (https://ci.testling.com/hyperhype/hyperscript)
 
-[Interactive Demo](http://hyperhype.github.com/hyperscript)
+[Interactive Demo](http://hyperhype.github.io/hyperscript)
 
 See also [mercury](https://github.com/Raynos/mercury), a modular ui
 framework influenced by hyperscript but much more heavily optimized.
