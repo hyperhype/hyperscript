@@ -23,7 +23,7 @@
     "html-element": false
   },
   "scripts": {
-    "test": "set -e; for t in test/*.js; do node $t; done"
+    "test": "tape test/*.js"
   },
   "testling": {
     "files": "test/*.js",
