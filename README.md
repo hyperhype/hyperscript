@@ -2,8 +2,7 @@
 
 Create HyperText with JavaScript, on client or server.
 
-[![testling badge](https://ci.testling.com/hyperhype/hyperscript.png)]
-  (https://ci.testling.com/hyperhype/hyperscript)
+[![testling badge](https://ci.testling.com/hyperhype/hyperscript.png)](https://ci.testling.com/hyperhype/hyperscript)
 
 [Interactive Demo](http://hyperhype.github.io/hyperscript)
 
