@@ -138,7 +138,30 @@ function context () {
     cleanupFuncs.length = 0
   }
 
-  return h
+  // Allow two different syntaxes:
+  //
+  // var { Span } = h = require("hyperscript");
+  // var div = h('div', "foo");
+  // var span = Span("bar");
+  //
+  // Originally inspired by https://github.com/ohanhi/hyperscript-helpers
+  // and https://stackoverflow.com/a/40075864/645498
+  return new Proxy( () => {}, {
+    get(target, property, receiver) {
+      return (first, ...rest) => {
+        if (isSelector(first)) {
+          return h(property + first, ...rest);
+        } else if (typeof first === 'undefined') {
+          return h(property);
+        } else {
+          return h(property, first, ...rest);
+        }
+      };
+    },
+    apply(target, thisArg, argumentsList) {
+      return h(...argumentsList);
+    }
+  });
 }
 
 var h = module.exports = context()
@@ -157,4 +180,15 @@ function isArray (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]'
 }
 
+function isValidString (param) {
+  return typeof param === 'string' && param.length > 0;
+}
 
+function startsWith (string, start) {
+  return string[0] === start;
+}
+
+function isSelector (param) {
+  return isValidString(param) && (startsWith(param, '.') ||
+      startsWith(param, '#'));
+}
