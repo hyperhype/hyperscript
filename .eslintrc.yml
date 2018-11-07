@@ -6,7 +6,6 @@ env:
 plugins:
   - jsdoc
 extends:
-  - 'plugin:react/recommended'
   - standard
 settings:
   jsdoc:
