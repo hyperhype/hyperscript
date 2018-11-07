@@ -155,28 +155,28 @@ test('context cleanup removes observable listeners', (t) => {
 		className
 	}, text)
 
-	t.is(element.outerHTML, '<p style="color: red; " class="para">hello</p>')
+	t.is(element.outerHTML, '<p style="color: red;" class="para">hello</p>')
 
 	context.cleanup()
 	color('blue')
 	text('world')
 	className('section')
 
-	t.is(element.outerHTML, '<p style="color: red; " class="para">hello</p>')
+	t.is(element.outerHTML, '<p style="color: red;" class="para">hello</p>')
 })
 
 test('context cleanup removes event handlers', (t) => {
-	const context = h.context()
-	const onClick = spy()
+	const context = f.context()
+	const onclick = spy()
 	const button = context('button', 'Click me!', {
 		onclick
 	})
 	context.cleanup()
 	simu.click(button)
-	t.false(onClick.called, 'click listener was not triggered')
+	t.false(onclick.called, 'click listener was not triggered')
 })
 
-test('unicode selectors', function (t) {
-  t.is(f('.⛄').outerHTML, '<div class="⛄"></div>')
-  t.is(f('span#⛄').outerHTML, '<span id="⛄"></span>')
+test('unicode selectors', (t) => {
+	t.is(f('.⛄').outerHTML, '<div class="⛄"></div>')
+	t.is(f('span#⛄').outerHTML, '<span id="⛄"></span>')
 })
