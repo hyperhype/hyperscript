@@ -5,61 +5,55 @@ const VDOM = new JSDOM()
 global.window = VDOM.window
 global.document = VDOM.window.document
 
-var test = require('tape')
+// var test = require('tape')
 var o = require('observable')
 var spy = require('ispy')
 var simu = require('simulate')
 
+const { test } = require('ava')
+
 var h = require('../').default
 
 test('simple', function (t) {
-  t.equal(h('h1').outerHTML, '<h1></h1>')
-  t.equal(h('h1', 'hello world').outerHTML, '<h1>hello world</h1>')
-  t.end()
+  t.deepEqual(h('h1').outerHTML, '<h1></h1>')
+  t.deepEqual(h('h1', 'hello world').outerHTML, '<h1>hello world</h1>')
 })
 
 test('nested', function(t) {
-  t.equal(h('div',
+  t.deepEqual(h('div',
     h('h1', 'Title'),
     h('p', 'Paragraph')
   ).outerHTML, '<div><h1>Title</h1><p>Paragraph</p></div>')
-  t.end()
 })
 
 test('arrays for nesting is ok', function(t){
-  t.equal(h('div',
+  t.deepEqual(h('div',
     [h('h1', 'Title'), h('p', 'Paragraph')]
   ).outerHTML, '<div><h1>Title</h1><p>Paragraph</p></div>')
-  t.end()
 })
 
 test('can use namespace in name', function(t){
-  t.equal(h('myns:mytag').outerHTML, '<myns:mytag></myns:mytag>');
-  t.end()
+  t.deepEqual(h('myns:mytag').outerHTML, '<myns:mytag></myns:mytag>');
 })
 
 test('can use id selector', function(t){
-  t.equal(h('div#frame').outerHTML, '<div id="frame"></div>')
-  t.end()
+  t.deepEqual(h('div#frame').outerHTML, '<div id="frame"></div>')
 })
 
 test('can use class selector', function(t){
-  t.equal(h('div.panel').outerHTML, '<div class="panel"></div>')
-  t.end()
+  t.deepEqual(h('div.panel').outerHTML, '<div class="panel"></div>')
 })
 
 test('can default element types', function(t){
-  t.equal(h('.panel').outerHTML, '<div class="panel"></div>')
-  t.equal(h('#frame').outerHTML, '<div id="frame"></div>')
-  t.end()
+  t.deepEqual(h('.panel').outerHTML, '<div class="panel"></div>')
+  t.deepEqual(h('#frame').outerHTML, '<div id="frame"></div>')
 })
 
 test('can set properties', function(t){
   var a = h('a', {href: 'http://google.com'})
-  t.equal(a.href, 'http://google.com/')
+  t.deepEqual(a.href, 'http://google.com/')
   var checkbox = h('input', {name: 'yes', type: 'checkbox'})
-  t.equal(checkbox.outerHTML, '<input name="yes" type="checkbox">')
-  t.end()
+  t.deepEqual(checkbox.outerHTML, '<input name="yes" type="checkbox">')
 })
 
 test('registers event handlers', function(t){
@@ -67,69 +61,60 @@ test('registers event handlers', function(t){
   var p = h('p', {onclick: onClick}, 'something')
   simu.click(p)
   t.assert(onClick.called)
-  t.end()
 })
 
 test('sets styles', function(t){
   var div = h('div', {style: {'color': 'red'}})
-  t.equal(div.style.color, 'red')
-  t.end()
+  t.deepEqual(div.style.color, 'red')
 })
 
 test('sets styles as text', function(t){
   var div = h('div', {style: 'color: red'})
-  t.equal(div.style.color, 'red')
-  t.end()
+  t.deepEqual(div.style.color, 'red')
 })
 
 test('sets data attributes', function(t){
   var div = h('div', {'data-value': 5})
-  t.equal(div.getAttribute('data-value'), '5') // failing for IE9
-  t.end()
+  t.deepEqual(div.getAttribute('data-value'), '5') // failing for IE9
 })
 
 test('boolean, number, date, regex get to-string\'ed', function(t){
   var e = h('p', true, false, 4, new Date('Mon Jan 15 2001'), /hello/)
   t.assert(e.outerHTML.match(/<p>truefalse4Mon Jan 15.+2001.*\/hello\/<\/p>/))
-  t.end()
 })
 
 test('observable content', function(t){
   var title = o()
   title('Welcome to HyperScript!')
   var h1 = h('h1', title)
-  t.equal(h1.outerHTML, '<h1>Welcome to HyperScript!</h1>')
+  t.deepEqual(h1.outerHTML, '<h1>Welcome to HyperScript!</h1>')
   title('Leave, creep!')
-  t.equal(h1.outerHTML, '<h1>Leave, creep!</h1>')
-  t.end()
+  t.deepEqual(h1.outerHTML, '<h1>Leave, creep!</h1>')
 })
 
 test('observable property', function(t){
   var checked = o()
   checked(true)
   var checkbox = h('input', {type: 'checkbox', checked: checked})
-  t.equal(checkbox.checked, true)
+  t.deepEqual(checkbox.checked, true)
   checked(false)
-  t.equal(checkbox.checked, false)
-  t.end()
+  t.deepEqual(checkbox.checked, false)
 })
 
 test('observable style', function(t){
   var color = o()
   color('red')
   var div = h('div', {style: {'color': color}})
-  t.equal(div.style.color, 'red')
+  t.deepEqual(div.style.color, 'red')
   color('blue')
-  t.equal(div.style.color, 'blue')
-  t.end()
+  t.deepEqual(div.style.color, 'blue')
 })
 
 test('context basic', function(t){
   var _h = h.context()
   var p = _h('p', 'hello')
-  t.equal(p.outerHTML, '<p>hello</p>')
+  t.deepEqual(p.outerHTML, '<p>hello</p>')
   _h.cleanup()
-  t.end()
 })
 
 test('context cleanup removes observable listeners', function(t){
@@ -141,13 +126,12 @@ test('context cleanup removes observable listeners', function(t){
   var className = o()
   className('para')
   var p = _h('p', {style: {color: color}, className: className}, text)
-  t.equal(p.outerHTML, '<p style=\"color: red; \" class=\"para\">hello</p>')
+  t.deepEqual(p.outerHTML, '<p style=\"color: red; \" class=\"para\">hello</p>')
   _h.cleanup()
   color('blue')
   text('world')
   className('section')
-  t.equal(p.outerHTML, '<p style=\"color: red; \" class=\"para\">hello</p>')
-  t.end()
+  t.deepEqual(p.outerHTML, '<p style=\"color: red; \" class=\"para\">hello</p>')
 })
 
 test('context cleanup removes event handlers', function(t){
@@ -157,11 +141,9 @@ test('context cleanup removes event handlers', function(t){
   _h.cleanup()
   simu.click(button)
   t.assert(!onClick.called, 'click listener was not triggered')
-  t.end()
 })
 
 test('unicode selectors', function (t) {
-  t.equal(h('.⛄').outerHTML, '<div class="⛄"></div>')
-  t.equal(h('span#⛄').outerHTML, '<span id="⛄"></span>')
-  t.end()
+  t.deepEqual(h('.⛄').outerHTML, '<div class="⛄"></div>')
+  t.deepEqual(h('span#⛄').outerHTML, '<span id="⛄"></span>')
 })

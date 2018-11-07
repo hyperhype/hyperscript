@@ -12,14 +12,25 @@
     "@babel/core": "^7.1.5",
     "@babel/preset-env": "^7.1.5",
     "@babel/register": "^7.0.0",
+    "ava": "^0.25.0",
     "ispy": "~0.1.2",
     "jsdom": "^13.0.0",
+    "nyc": "^13.1.0",
     "observable": "~2.1.2",
     "simulate": "0.0.3",
     "tape": "^4.9.1"
   },
   "scripts": {
-    "test": "set -e; for t in test/*.js; do node $t; done",
+    "test": "nyc --reporter=lcov ava",
     "lint": "eslint index.js test"
+  },
+  "ava": {
+    "timeout": "2m",
+    "verbose": true,
+    "concurrency": 3,
+    "failFast": true,
+    "files": [
+      "test/*.js"
+    ]
   }
 }
