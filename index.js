@@ -23,34 +23,38 @@ const mapObject = (object, fn) => {
 	}
 }
 
+const parseClass = (string, source) => {
+	let element = source
+
+	// Our minimal parser doesn’t understand escaping CSS special
+	// characters like `#`. Don’t use them. More reading:
+	// https://mathiasbynens.be/notes/css-escapes .
+	const parts = string.split(/([.#]?[^\s#.]+)/)
+	if (/^\.|#/.test(parts[1])) {
+		element = document.createElement('div')
+	}
+
+	parts.forEach((name) => {
+		if (!name) {
+			return
+		}
+		if (!element) {
+			element = document.createElement(name)
+		} else if (name[0] === '.') {
+			addClass(element, name.substring(1))
+		} else if (name[0] === '#') {
+			element.setAttribute('id', name.substring(1))
+		}
+	})
+
+	return element
+}
+
 const context = () => {
 	const cleanupFuncs = []
 
 	const f = (...args) => {
 		let element = null
-
-		const parseClass = (string) => {
-			// Our minimal parser doesn’t understand escaping CSS special
-			// characters like `#`. Don’t use them. More reading:
-			// https://mathiasbynens.be/notes/css-escapes .
-			const parts = string.split(/([.#]?[^\s#.]+)/)
-			if (/^\.|#/.test(parts[1])) {
-				element = document.createElement('div')
-			}
-
-			parts.forEach((name) => {
-				if (!name) {
-					return
-				}
-				if (!element) {
-					element = document.createElement(name)
-				} else if (name[0] === '.') {
-					addClass(element, name.substring(1))
-				} else if (name[0] === '#') {
-					element.setAttribute('id', name.substring(1))
-				}
-			})
-		}
 
 		const parseArg = (arg) => {
 			let childNode = null
@@ -61,7 +65,7 @@ const context = () => {
 				if (element) {
 					element.appendChild(childNode = document.createTextNode(arg))
 				} else {
-					parseClass(arg)
+					element = parseClass(arg, element)
 				}
 			} else if (
 				typeof arg === 'number' ||
