@@ -1,4 +1,12 @@
 language: node_js
 node_js:
-  - "8"
-script: npm install && npm run ci
+- '8'
+script: npm run ci
+deploy:
+  provider: npm
+  email: lucian.buzzo@gmail.com
+  api_key:
+    secure: ud+16JfQnSkerylkE/HzwdtkJipI9H/Zw5PIxGhirmoED8JRqpfWNmVvqMeAi88JM3cP2Evk9MONPfgd22wS8zamYepSEjt6aWDldOlmRWmq5F4y2Jt3/XLWiGGmvJNlZ2XCXVwv3s7gmnyYDRFwO59MxAEtTIEADh7i9SPM7w5fGBH+q8gxmv+F16knaef4UtUkEkGqGcc0cq+gcVSyMUJqNPWhrHq6MaMp71seZyqL/oOv9eiL+h3cWJGBjDD5bpFFWYQHcPqT0IsqBrcLPyzAoZ3FvQVK1pbT/jiYlFfEdKveKupgD6milh12TAwsLMdSGsYGIje1DsVJ3dgoKndO0bUXbmQ5H4cyHd9KiJU8xYokiNVX3TY9qc/bU+g5Pw2nO3EsyIJGnOR44bCrAWkkwWuoKD9voDOv08ZfhLj9I9ICc1poKi3QPN7hV7xcAP9dwkwRnRYDNaoGSC01MK/lUpQ7DCzMb1hbMna+giRTcCuaMvdXF2M7TEIvWEKn9peGDbbw+5hwv3/U715rXxUyOXUYh8XPFHLtZWPMEP5sBM8Z2oEYUi1rV4HMIWTElzVYmMgtE81otZZMhbYwD3uPw8pTmBaQ74ZnL+3sEMzjGqk6MVA39P7BTj43tBtL5XkmGuC85oQE1Ql2M7pPyF693/WGVmmKlmcfgsBktDE=
+  on:
+    tags: true
+    repo: LucianBuzzo/frenzyscript
