@@ -1,10 +1,8 @@
-# HyperScript
+# FenzyScript
 
 Create HyperText with JavaScript, on client or server.
 
-[![testling badge](https://ci.testling.com/hyperhype/hyperscript.png)](https://ci.testling.com/hyperhype/hyperscript)
-
-[Interactive Demo](http://hyperhype.github.io/hyperscript)
+[![Build Status](https://travis-ci.org/LucianBuzzo/frenzyscript.svg?branch=master)](https://travis-ci.org/LucianBuzzo/frenzyscript)
 
 See also [mercury](https://github.com/Raynos/mercury), a modular ui
 framework influenced by hyperscript but much more heavily optimized.
