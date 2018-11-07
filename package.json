@@ -1,6 +1,6 @@
 {
   "name": "frenzyscript",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "homepage": "https://github.com/LucianBuzzo/frenzyscript",
   "repository": {
     "type": "git",
@@ -25,12 +25,14 @@
     "nyc": "^13.1.0",
     "observable": "~2.1.2",
     "simulate": "0.0.3",
-    "tape": "^4.9.1"
+    "tape": "^4.9.1",
+    "versionist": "^3.0.2"
   },
   "scripts": {
     "test": "nyc --reporter=lcov ava",
     "lint": "eslint index.js test",
-    "ci": "npm run lint && npm test"
+    "ci": "npm run lint && npm test",
+    "version-up": "versionist && ./scripts/add-version-tag.js"
   },
   "ava": {
     "timeout": "2m",
