@@ -15,14 +15,6 @@
     "simulate": "0.0.3",
     "tape": "~2.13.3"
   },
-  "dependencies": {
-    "browser-split": "0.0.0",
-    "class-list": "~0.1.0",
-    "html-element": "^2.0.0"
-  },
-  "browser": {
-    "html-element": false
-  },
   "scripts": {
     "test": "set -e; for t in test/*.js; do node $t; done"
   },

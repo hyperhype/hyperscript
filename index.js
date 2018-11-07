@@ -1,7 +1,4 @@
-var split = require('browser-split')
-var ClassList = require('class-list')
-
-var w = typeof window === 'undefined' ? require('html-element') : window
+var w = window
 var document = w.document
 var Text = w.Text
 
@@ -18,7 +15,7 @@ function context () {
         // characters like `#`. Don’t use them. More reading:
         // https://mathiasbynens.be/notes/css-escapes .
 
-        var m = split(string, /([\.#]?[^\s#.]+)/)
+        var m = string.split(/([\.#]?[^\s#.]+)/)
         if(/^\.|#/.test(m[1]))
           e = document.createElement('div')
         forEach(m, function (v) {
@@ -27,7 +24,7 @@ function context () {
           if(!e)
             e = document.createElement(v)
           else if (v[0] === '.')
-            ClassList(e).add(s)
+            e.className += (' ' + s)
           else if (v[0] === '#')
             e.setAttribute('id', s)
         })
@@ -156,5 +153,3 @@ function forEach (arr, fn) {
 function isArray (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]'
 }
-
-
