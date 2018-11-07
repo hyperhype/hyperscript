@@ -1,6 +1,5 @@
-const w = typeof window === undefined ? this : window;
-const document = w.document
-const Text = w.Text
+const document = window.document
+const Text = window.Text
 
 const addClass = (element, name) => {
 	const classes = element.className.length ? element.className.split(/\s+/) : []
@@ -8,156 +7,160 @@ const addClass = (element, name) => {
 	element.className = classes.join(' ')
 }
 
-function context () {
+const isNode = (el) => {
+	return el && el.nodeName && el.nodeType
+}
 
-	var cleanupFuncs = []
+const has = (object, key) => {
+	return object.hasOwnProperty(key)
+}
 
-	function h() {
-		var args = [].slice.call(arguments), e = null
-		function item (l) {
-			var r
-			function parseClass (string) {
-				// Our minimal parser doesn’t understand escaping CSS special
-				// characters like `#`. Don’t use them. More reading:
-				// https://mathiasbynens.be/notes/css-escapes .
+const mapObject = (object, fn) => {
+	for (const key in object) {
+		if (has(object, key)) {
+			fn(object[key], key)
+		}
+	}
+}
 
-				var m = string.split(/([\.#]?[^\s#.]+)/)
-				if(/^\.|#/.test(m[1]))
-					e = document.createElement('div')
-				forEach(m, function (v) {
-					var s = v.substring(1,v.length)
-					if(!v) return
-					if(!e)
-						e = document.createElement(v)
-					else if (v[0] === '.')
-						addClass(e, s)
-					else if (v[0] === '#')
-						e.setAttribute('id', s)
-				})
+const context = () => {
+	const cleanupFuncs = []
+
+	const f = (...args) => {
+		let element = null
+
+		const parseClass = (string) => {
+			// Our minimal parser doesn’t understand escaping CSS special
+			// characters like `#`. Don’t use them. More reading:
+			// https://mathiasbynens.be/notes/css-escapes .
+			const parts = string.split(/([.#]?[^\s#.]+)/)
+			if (/^\.|#/.test(parts[1])) {
+				element = document.createElement('div')
 			}
 
-			if(l == null)
-				;
-			else if('string' === typeof l) {
-				if(!e)
-					parseClass(l)
-				else
-					e.appendChild(r = document.createTextNode(l))
-			}
-			else if('number' === typeof l
-				|| 'boolean' === typeof l
-				|| l instanceof Date
-				|| l instanceof RegExp ) {
-					e.appendChild(r = document.createTextNode(l.toString()))
-			}
-			//there might be a better way to handle this...
-			else if (isArray(l))
-				forEach(l, item)
-			else if(isNode(l))
-				e.appendChild(r = l)
-			else if(l instanceof Text)
-				e.appendChild(r = l)
-			else if ('object' === typeof l) {
-				for (var k in l) {
-					if('function' === typeof l[k]) {
-						if(/^on\w+/.test(k)) {
-							(function (k, l) { // capture k, l in the closure
-								if (e.addEventListener){
-									e.addEventListener(k.substring(2), l[k], false)
-									cleanupFuncs.push(function(){
-										e.removeEventListener(k.substring(2), l[k], false)
-									})
-								}else{
-									e.attachEvent(k, l[k])
-									cleanupFuncs.push(function(){
-										e.detachEvent(k, l[k])
-									})
-								}
-							})(k, l)
+			parts.forEach((name) => {
+				if (!name) {
+					return
+				}
+				if (!element) {
+					element = document.createElement(name)
+				} else if (name[0] === '.') {
+					addClass(element, name.substring(1))
+				} else if (name[0] === '#') {
+					element.setAttribute('id', name.substring(1))
+				}
+			})
+		}
+
+		const parseArg = (arg) => {
+			let childNode = null
+
+			if (arg === null || typeof arg === 'undefined') {
+				return childNode
+			} else if (typeof arg === 'string') {
+				if (element) {
+					element.appendChild(childNode = document.createTextNode(arg))
+				} else {
+					parseClass(arg)
+				}
+			} else if (
+				typeof arg === 'number' ||
+				typeof arg === 'boolean' ||
+				arg instanceof Date ||
+				arg instanceof RegExp
+			) {
+				element.appendChild(childNode = document.createTextNode(arg.toString()))
+			} else if (Array.isArray(arg)) {
+				// There might be a better way to handle this...
+				arg.forEach(parseArg)
+			} else if (isNode(arg)) {
+				element.appendChild(childNode = arg)
+			} else if (arg instanceof Text) {
+				element.appendChild(childNode = arg)
+			} else if (typeof arg === 'object') {
+				mapObject(arg, (keyValue, key) => {
+					if (typeof keyValue === 'function') {
+						if (/^on\w+/.test(key)) {
+							element.addEventListener(key.substring(2), keyValue, false)
+							cleanupFuncs.push(() => {
+								element.removeEventListener(key.substring(2), keyValue, false)
+							})
 						} else {
-							// observable
-							e[k] = l[k]()
-							cleanupFuncs.push(l[k](function (v) {
-								e[k] = v
+							// Observable
+							element[key] = keyValue()
+							cleanupFuncs.push(keyValue((value) => {
+								element[key] = value
 							}))
 						}
-					}
-					else if(k === 'style') {
-						if('string' === typeof l[k]) {
-							e.style.cssText = l[k]
-						}else{
-							for (var s in l[k]) (function(s, v) {
-								if('function' === typeof v) {
-									// observable
-									e.style.setProperty(s, v())
-									cleanupFuncs.push(v(function (val) {
-										e.style.setProperty(s, val)
+					} else if (key === 'style') {
+						if (typeof keyValye === 'string') {
+							element.style.cssText = keyValue
+						} else {
+							mapObject(keyValue, (value, name) => {
+								if (typeof value === 'function') {
+									// Observable
+									element.style.setProperty(name, value())
+									return cleanupFuncs.push(value((val) => {
+										element.style.setProperty(name, val)
 									}))
-								} else
-									var match = l[k][s].match(/(.*)\W+!important\W*$/);
-									if (match) {
-										e.style.setProperty(s, match[1], 'important')
-									} else {
-										e.style.setProperty(s, l[k][s])
-									}
-							})(s, l[k][s])
-						}
-					} else if(k === 'attrs') {
-						for (var v in l[k]) {
-							e.setAttribute(v, l[k][v])
-						}
-					}
-					else if (k.substr(0, 5) === "data-") {
-						e.setAttribute(k, l[k])
-					} else {
-						e[k] = l[k]
-					}
-				}
-			} else if ('function' === typeof l) {
-				//assume it's an observable!
-				var v = l()
-				e.appendChild(r = isNode(v) ? v : document.createTextNode(v))
+								}
 
-				cleanupFuncs.push(l(function (v) {
-					if(isNode(v) && r.parentElement)
-						r.parentElement.replaceChild(v, r), r = v
-					else
-						r.textContent = v
+								const match = value.match(/(.*)\W+!important\W*$/)
+
+								if (match) {
+									return element.style.setProperty(name, match[1], 'important')
+								}
+
+								return element.style.setProperty(name, value)
+							})
+						}
+					} else if (key === 'attrs') {
+						mapObject(keyValue, (value, name) => {
+							element.setAttribute(name, value)
+						})
+					} else if (key.substr(0, 5) === 'data-') {
+						element.setAttribute(key, keyValue)
+					} else {
+						element[key] = arg[key]
+					}
+				})
+			} else if (typeof arg === 'function') {
+				// Assume it's an observable!
+				const observable = arg()
+				element.appendChild(childNode = isNode(observable) ? observable : document.createTextNode(observable))
+
+				cleanupFuncs.push(arg((value) => {
+					if (isNode(value) && childNode.parentElement) {
+						childNode.parentElement.replaceChild(value, childNode)
+						childNode = value
+					} else {
+						childNode.textContent = value
+					}
 				}))
 			}
 
-			return r
+			return childNode
 		}
-		while(args.length)
-			item(args.shift())
 
-		return e
+		while (args.length) {
+			parseArg(args.shift())
+		}
+
+		return element
 	}
 
-	h.cleanup = function () {
-		for (var i = 0; i < cleanupFuncs.length; i++){
-			cleanupFuncs[i]()
-		}
+	f.cleanup = function () {
+		cleanupFuncs.forEach((func) => {
+			func()
+		})
+
 		cleanupFuncs.length = 0
 	}
 
-	return h
+	return f
 }
 
-var h = context()
-h.context = context
+const f = context()
+f.context = context
 
-function isNode (el) {
-  return el && el.nodeName && el.nodeType
-}
-
-function forEach (arr, fn) {
-  if (arr.forEach) return arr.forEach(fn)
-  for (var i = 0; i < arr.length; i++) fn(arr[i], i)
-}
-
-function isArray (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]'
-}
-
-export default h
+export default f

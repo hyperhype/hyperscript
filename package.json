@@ -22,7 +22,8 @@
   },
   "scripts": {
     "test": "nyc --reporter=lcov ava",
-    "lint": "eslint index.js test"
+    "lint": "eslint index.js test",
+    "ci": "npm run lint && npm test"
   },
   "ava": {
     "timeout": "2m",
