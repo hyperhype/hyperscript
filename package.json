@@ -9,10 +9,11 @@
   "author": "'Dominic Tarr' <dominic.tarr@gmail.com> (http://dominictarr.com)",
   "license": "MIT",
   "devDependencies": {
-    "tape": "~2.13.3",
-    "observable": "~2.1.2",
+    "browserify": "^16.2.3",
     "ispy": "~0.1.2",
-    "simulate": "0.0.3"
+    "observable": "~2.1.2",
+    "simulate": "0.0.3",
+    "tape": "~2.13.3"
   },
   "dependencies": {
     "browser-split": "0.0.0",
