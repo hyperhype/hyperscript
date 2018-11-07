@@ -1,3 +1,5 @@
+.nyc_output
+coverage
 scripts
 test
 .babelrc
