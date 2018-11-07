@@ -4,7 +4,9 @@ Create HyperText with JavaScript, on client or server.
 
 This is a fork of [hyperscript](https://github.com/hyperhype/hyperscript).
 
+[![npm version](https://badge.fury.io/js/frenzyscript.svg)](http://badge.fury.io/js/frenzyscript)
 [![Build Status](https://travis-ci.org/LucianBuzzo/frenzyscript.svg?branch=master)](https://travis-ci.org/LucianBuzzo/frenzyscript)
+[![Dependency Status](https://img.shields.io/david/LucianBuzzo/frenzyscript.svg)](https://david-dm.org/LucianBuzzo/frenzyscript)
 
 ## Example
 
