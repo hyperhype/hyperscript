@@ -1,5 +1,4 @@
 const document = window.document
-const Text = window.Text
 
 const addClass = (element, name) => {
 	const classes = element.className.length ? element.className.split(/\s+/) : []
@@ -40,9 +39,15 @@ const parseClass = (string, source) => {
 		}
 		if (!element) {
 			element = document.createElement(name)
-		} else if (name[0] === '.') {
+
+			return
+		}
+
+		if (name[0] === '.') {
 			addClass(element, name.substring(1))
-		} else if (name[0] === '#') {
+		}
+
+		if (name[0] === '#') {
 			element.setAttribute('id', name.substring(1))
 		}
 	})
@@ -79,8 +84,6 @@ const context = () => {
 				arg.forEach(parseArg)
 			} else if (isNode(arg)) {
 				element.appendChild(childNode = arg)
-			} else if (arg instanceof Text) {
-				element.appendChild(childNode = arg)
 			} else if (typeof arg === 'object') {
 				mapObject(arg, (keyValue, key) => {
 					if (typeof keyValue === 'function') {
@@ -97,7 +100,7 @@ const context = () => {
 							}))
 						}
 					} else if (key === 'style') {
-						if (typeof keyValye === 'string') {
+						if (typeof keyValue === 'string') {
 							element.style.cssText = keyValue
 						} else {
 							mapObject(keyValue, (value, name) => {

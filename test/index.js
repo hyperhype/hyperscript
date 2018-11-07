@@ -28,6 +28,11 @@ test('nested', (t) => {
 	).outerHTML, '<div><h1>Title</h1><p>Paragraph</p></div>')
 })
 
+test('null arguments should be skipped', (t) => {
+	t.is(f(null, 'h1').outerHTML, '<h1></h1>')
+	t.is(f('h1', null, 'hello world').outerHTML, '<h1>hello world</h1>')
+})
+
 test('arrays for nesting is ok', (t) => {
 	t.is(f('div',
 		[
@@ -45,8 +50,16 @@ test('can use id selector', (t) => {
 	t.is(f('div#frame').outerHTML, '<div id="frame"></div>')
 })
 
+test('can use id and class selector', (t) => {
+	t.is(f('div.panel#app').outerHTML, '<div class="panel" id="app"></div>')
+})
+
 test('can use class selector', (t) => {
 	t.is(f('div.panel').outerHTML, '<div class="panel"></div>')
+})
+
+test('can use multiple class selectors', (t) => {
+	t.is(f('div.panel.top.green').outerHTML, '<div class="panel top green"></div>')
 })
 
 test('can default element types', (t) => {
@@ -68,6 +81,28 @@ test('can set properties', (t) => {
 	t.is(checkbox.outerHTML, '<input name="yes" type="checkbox">')
 })
 
+test('setting properties ignores prototype properties', (t) => {
+	class Options {
+		constructor (options) {
+			// eslint-disable-next-line
+			for (const key in options) {
+				this[key] = options[key]
+			}
+		}
+
+		log () {
+			console.log(this)
+		}
+	}
+
+	const checkbox = f('input', new Options({
+		name: 'yes',
+		type: 'checkbox'
+	}))
+
+	t.is(checkbox.outerHTML, '<input name="yes" type="checkbox">')
+})
+
 test('registers event handlers', (t) => {
 	const onClick = spy()
 	const para = f('p', {
@@ -84,6 +119,15 @@ test('sets styles', (t) => {
 		}
 	})
 	t.is(div.style.color, 'red')
+})
+
+test('sets style strings', (t) => {
+	const div = f('div', {
+		style: 'color: red;'
+	})
+
+	t.is(div.style.color, 'red')
+	t.is(div.outerHTML, '<div style="color: red;"></div>')
 })
 
 test('sets data attributes', (t) => {
