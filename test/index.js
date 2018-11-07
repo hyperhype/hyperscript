@@ -1,10 +1,16 @@
-global.document = require('html-element').document;
+require('@babel/register');
+
+const { JSDOM } = require('jsdom')
+const VDOM = new JSDOM()
+global.window = VDOM.window
+global.document = VDOM.window.document
 
 var test = require('tape')
-var h    = require('../')
-var o    = require('observable')
-var spy  = require('ispy')
+var o = require('observable')
+var spy = require('ispy')
 var simu = require('simulate')
+
+var h = require('../').default
 
 test('simple', function (t) {
   t.equal(h('h1').outerHTML, '<h1></h1>')

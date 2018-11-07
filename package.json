@@ -1,37 +1,25 @@
 {
-  "name": "hyperscript",
-  "version": "2.0.2",
-  "homepage": "https://github.com/hyperhype/hyperscript",
+  "name": "frenzyscript",
+  "version": "0.0.1",
+  "homepage": "https://github.com/LucianBuzzo/frenzyscript",
   "repository": {
     "type": "git",
-    "url": "git://github.com/hyperhype/hyperscript.git"
+    "url": "git://github.com/LucianBuzzo/frenzyscript.git"
   },
-  "author": "'Dominic Tarr' <dominic.tarr@gmail.com> (http://dominictarr.com)",
+  "author": "Lucian Buzzo <lucian.buzzo@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "browserify": "^16.2.3",
+    "@babel/core": "^7.1.5",
+    "@babel/preset-env": "^7.1.5",
+    "@babel/register": "^7.0.0",
     "ispy": "~0.1.2",
+    "jsdom": "^13.0.0",
     "observable": "~2.1.2",
     "simulate": "0.0.3",
-    "tape": "~2.13.3"
+    "tape": "^4.9.1"
   },
   "scripts": {
-    "test": "set -e; for t in test/*.js; do node $t; done"
-  },
-  "testling": {
-    "files": "test/*.js",
-    "browsers": [
-      "ie/8..latest",
-      "firefox/17..latest",
-      "firefox/nightly",
-      "chrome/22..latest",
-      "chrome/canary",
-      "opera/12..latest",
-      "opera/next",
-      "safari/5.1..latest",
-      "ipad/6.0..latest",
-      "iphone/6.0..latest",
-      "android-browser/4.2..latest"
-    ]
+    "test": "set -e; for t in test/*.js; do node $t; done",
+    "lint": "eslint index.js test"
   }
 }

@@ -1,4 +1,4 @@
-var w = window
+var w = typeof window === undefined ? this : window;
 var document = w.document
 var Text = w.Text
 
