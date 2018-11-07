@@ -138,7 +138,7 @@ function context () {
   return h
 }
 
-var h = module.exports = context()
+var h = context()
 h.context = context
 
 function isNode (el) {
@@ -153,3 +153,5 @@ function forEach (arr, fn) {
 function isArray (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]'
 }
+
+export default h
