@@ -1,0 +1,10 @@
+scripts
+test
+.babelrc
+.editorconfig
+.eslintrc.yml
+.gitignore
+.travis.yml
+CHANGELOG.md
+index.html
+README.md
