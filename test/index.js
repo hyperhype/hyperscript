@@ -224,3 +224,11 @@ test('unicode selectors', (t) => {
 	t.is(f('.⛄').outerHTML, '<div class="⛄"></div>')
 	t.is(f('span#⛄').outerHTML, '<span id="⛄"></span>')
 })
+
+test('attach to existing node', (t) => {
+	const node1 = f('div')
+	t.is(f(node1, f('h1', 'hello world')).outerHTML, '<div><h1>hello world</h1></div>')
+
+	const node2 = document.createElement('div')
+	t.is(f(node2, f('h1', 'hello world')).outerHTML, '<div><h1>hello world</h1></div>')
+})

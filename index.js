@@ -83,7 +83,11 @@ const context = () => {
 				// There might be a better way to handle this...
 				arg.forEach(parseArg)
 			} else if (isNode(arg)) {
-				element.appendChild(childNode = arg)
+				if (element) {
+					element.appendChild(childNode = arg)
+				} else {
+					element = arg
+				}
 			} else if (typeof arg === 'object') {
 				mapObject(arg, (keyValue, key) => {
 					if (typeof keyValue === 'function') {
