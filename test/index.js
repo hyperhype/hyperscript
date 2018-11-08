@@ -130,6 +130,16 @@ test('sets style strings', (t) => {
 	t.is(div.outerHTML, '<div style="color: red;"></div>')
 })
 
+test('sets attributes', (t) => {
+	const src = 'http://placekitten.com/200/300'
+	const img = f('img', {
+		'attrs': {
+			src
+		}
+	})
+	t.is(img.getAttribute('src'), src)
+})
+
 test('sets data attributes', (t) => {
 	const div = f('div', {
 		'data-value': 5
