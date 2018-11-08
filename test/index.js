@@ -133,7 +133,7 @@ test('sets style strings', (t) => {
 test('sets attributes', (t) => {
 	const src = 'http://placekitten.com/200/300'
 	const img = f('img', {
-		'attrs': {
+		attrs: {
 			src
 		}
 	})
