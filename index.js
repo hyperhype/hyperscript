@@ -17,7 +17,7 @@ function context () {
         // characters like `#`. Don’t use them. More reading:
         // https://mathiasbynens.be/notes/css-escapes .
 
-        var m = split(string, /([\.#]?[^\s#.]+)/)
+        var m = split(string, /([.#]?[^\s#.]+)/)
         if (/^\.|#/.test(m[1])) { e = document.createElement('div') }
         forEach(m, function (v) {
           var s = v.substring(1, v.length)
