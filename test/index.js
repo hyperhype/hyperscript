@@ -1,9 +1,9 @@
-global.document = require('html-element').document;
+global.document = require('html-element').document
 
 var test = require('tape')
-var h    = require('../')
-var o    = require('observable')
-var spy  = require('ispy')
+var h = require('../')
+var o = require('observable')
+var spy = require('ispy')
 var simu = require('simulate')
 
 test('simple', function (t) {
@@ -12,7 +12,7 @@ test('simple', function (t) {
   t.end()
 })
 
-test('nested', function(t) {
+test('nested', function (t) {
   t.equal(h('div',
     h('h1', 'Title'),
     h('p', 'Paragraph')
@@ -20,75 +20,75 @@ test('nested', function(t) {
   t.end()
 })
 
-test('arrays for nesting is ok', function(t){
+test('arrays for nesting is ok', function (t) {
   t.equal(h('div',
     [h('h1', 'Title'), h('p', 'Paragraph')]
   ).outerHTML, '<div><h1>Title</h1><p>Paragraph</p></div>')
   t.end()
 })
 
-test('can use namespace in name', function(t){
-  t.equal(h('myns:mytag').outerHTML, '<myns:mytag></myns:mytag>');
+test('can use namespace in name', function (t) {
+  t.equal(h('myns:mytag').outerHTML, '<myns:mytag></myns:mytag>')
   t.end()
 })
 
-test('can use id selector', function(t){
+test('can use id selector', function (t) {
   t.equal(h('div#frame').outerHTML, '<div id="frame"></div>')
   t.end()
 })
 
-test('can use class selector', function(t){
+test('can use class selector', function (t) {
   t.equal(h('div.panel').outerHTML, '<div class="panel"></div>')
   t.end()
 })
 
-test('can default element types', function(t){
+test('can default element types', function (t) {
   t.equal(h('.panel').outerHTML, '<div class="panel"></div>')
   t.equal(h('#frame').outerHTML, '<div id="frame"></div>')
   t.end()
 })
 
-test('can set properties', function(t){
-  var a = h('a', {href: 'http://google.com'})
+test('can set properties', function (t) {
+  var a = h('a', { href: 'http://google.com' })
   t.equal(a.href, 'http://google.com/')
-  var checkbox = h('input', {name: 'yes', type: 'checkbox'})
+  var checkbox = h('input', { name: 'yes', type: 'checkbox' })
   t.equal(checkbox.outerHTML, '<input name="yes" type="checkbox">')
   t.end()
 })
 
-test('registers event handlers', function(t){
+test('registers event handlers', function (t) {
   var onClick = spy()
-  var p = h('p', {onclick: onClick}, 'something')
+  var p = h('p', { onclick: onClick }, 'something')
   simu.click(p)
   t.assert(onClick.called)
   t.end()
 })
 
-test('sets styles', function(t){
-  var div = h('div', {style: {'color': 'red'}})
+test('sets styles', function (t) {
+  var div = h('div', { style: { 'color': 'red' } })
   t.equal(div.style.color, 'red')
   t.end()
 })
 
-test('sets styles as text', function(t){
-  var div = h('div', {style: 'color: red'})
+test('sets styles as text', function (t) {
+  var div = h('div', { style: 'color: red' })
   t.equal(div.style.color, 'red')
   t.end()
 })
 
-test('sets data attributes', function(t){
-  var div = h('div', {'data-value': 5})
+test('sets data attributes', function (t) {
+  var div = h('div', { 'data-value': 5 })
   t.equal(div.getAttribute('data-value'), '5') // failing for IE9
   t.end()
 })
 
-test('boolean, number, date, regex get to-string\'ed', function(t){
+test('boolean, number, date, regex get to-string\'ed', function (t) {
   var e = h('p', true, false, 4, new Date('Mon Jan 15 2001'), /hello/)
   t.assert(e.outerHTML.match(/<p>truefalse4Mon Jan 15.+2001.*\/hello\/<\/p>/))
   t.end()
 })
 
-test('observable content', function(t){
+test('observable content', function (t) {
   var title = o()
   title('Welcome to HyperScript!')
   var h1 = h('h1', title)
@@ -98,27 +98,27 @@ test('observable content', function(t){
   t.end()
 })
 
-test('observable property', function(t){
+test('observable property', function (t) {
   var checked = o()
   checked(true)
-  var checkbox = h('input', {type: 'checkbox', checked: checked})
+  var checkbox = h('input', { type: 'checkbox', checked: checked })
   t.equal(checkbox.checked, true)
   checked(false)
   t.equal(checkbox.checked, false)
   t.end()
 })
 
-test('observable style', function(t){
+test('observable style', function (t) {
   var color = o()
   color('red')
-  var div = h('div', {style: {'color': color}})
+  var div = h('div', { style: { 'color': color } })
   t.equal(div.style.color, 'red')
   color('blue')
   t.equal(div.style.color, 'blue')
   t.end()
 })
 
-test('context basic', function(t){
+test('context basic', function (t) {
   var _h = h.context()
   var p = _h('p', 'hello')
   t.equal(p.outerHTML, '<p>hello</p>')
@@ -126,7 +126,7 @@ test('context basic', function(t){
   t.end()
 })
 
-test('context cleanup removes observable listeners', function(t){
+test('context cleanup removes observable listeners', function (t) {
   var _h = h.context()
   var text = o()
   text('hello')
@@ -134,7 +134,7 @@ test('context cleanup removes observable listeners', function(t){
   color('red')
   var className = o()
   className('para')
-  var p = _h('p', {style: {color: color}, className: className}, text)
+  var p = _h('p', { style: { color: color }, className: className }, text)
   t.equal(p.outerHTML, '<p style=\"color: red; \" class=\"para\">hello</p>')
   _h.cleanup()
   color('blue')
@@ -144,10 +144,10 @@ test('context cleanup removes observable listeners', function(t){
   t.end()
 })
 
-test('context cleanup removes event handlers', function(t){
+test('context cleanup removes event handlers', function (t) {
   var _h = h.context()
   var onClick = spy()
-  var button = _h('button', 'Click me!', {onclick: onClick})
+  var button = _h('button', 'Click me!', { onclick: onClick })
   _h.cleanup()
   simu.click(button)
   t.assert(!onClick.called, 'click listener was not triggered')
