@@ -1,3 +1,9 @@
 node_modules
 node_modules/*
 npm_debug.log
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# nyc test coverage
+.nyc_output
