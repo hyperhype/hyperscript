@@ -40,14 +40,16 @@ function context () {
         } else {
           e.appendChild(r = document.createTextNode(l))
         }
-      } else if (typeof l === 'number' ||
+      } else if (
+        typeof l === 'number' ||
         typeof l === 'boolean' ||
         l instanceof Date ||
-        l instanceof RegExp) {
+        l instanceof RegExp
+      ) {
         e.appendChild(r = document.createTextNode(l.toString()))
-      }
+
       // there might be a better way to handle this...
-      else if (isArray(l)) {
+      } else if (isArray(l)) {
         forEach(l, item)
       } else if (isNode(l)) {
         e.appendChild(r = l)
@@ -117,7 +119,8 @@ function context () {
 
         cleanupFuncs.push(l(function (v) {
           if (isNode(v) && r.parentElement) {
-            r.parentElement.replaceChild(v, r), r = v
+            r.parentElement.replaceChild(v, r)
+            r = v
           } else {
             r.textContent = v
           }
@@ -156,5 +159,5 @@ function forEach (arr, fn) {
 }
 
 function isArray (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]'
+  return Object.prototype.toString.call(arr) === '[object Array]'
 }
