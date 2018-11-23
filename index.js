@@ -114,8 +114,8 @@ function context () {
         }
       } else if (typeof l === 'function') {
         // assume it's an observable!
-        var v = l()
-        e.appendChild(r = isNode(v) ? v : document.createTextNode(v))
+        var o = l()
+        e.appendChild(r = isNode(o) ? o : document.createTextNode(o))
 
         cleanupFuncs.push(l(function (v) {
           if (isNode(v) && r.parentElement) {
