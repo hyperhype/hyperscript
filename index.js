@@ -35,6 +35,13 @@ function context () {
 
       if(l == null)
         ;
+      else if (isArray(l) && !e) {
+        // create document fragment
+        e = document.createDocumentFragment();
+        forEach(l, function(child) {
+          e.appendChild(child);
+        });
+      }
       else if('string' === typeof l) {
         if(!e)
           parseClass(l)
