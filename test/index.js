@@ -82,6 +82,12 @@ test('sets data attributes', function(t){
   t.end()
 })
 
+test('sets aria attributes', function(t){
+  var div = h('div', {'aria-label': 'Close'})
+  t.equal(div.getAttribute('aria-label'), 'Close')
+  t.end()
+})
+
 test('boolean, number, date, regex get to-string\'ed', function(t){
   var e = h('p', true, false, 4, new Date('Mon Jan 15 2001'), /hello/)
   t.assert(e.outerHTML.match(/<p>truefalse4Mon Jan 15.+2001.*\/hello\/<\/p>/))

@@ -104,7 +104,7 @@ function context () {
               e.setAttribute(v, l[k][v])
             }
           }
-          else if (k.substr(0, 5) === "data-") {
+          else if (/^(data|aria)-/.test(k)) {
             e.setAttribute(k, l[k])
           } else {
             e[k] = l[k]
