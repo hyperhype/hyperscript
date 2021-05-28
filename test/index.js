@@ -154,6 +154,12 @@ test('context cleanup removes event handlers', function(t){
   t.end()
 })
 
+test('false-valued attributes are ignored', function (t) {
+  t.equal(h('input', {type: 'text', name: 'foo', required: false}).outerHTML,
+          '<input type="text" name="foo">')
+  t.end()
+})
+
 test('unicode selectors', function (t) {
   t.equal(h('.⛄').outerHTML, '<div class="⛄"></div>')
   t.equal(h('span#⛄').outerHTML, '<span id="⛄"></span>')

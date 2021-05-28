@@ -56,6 +56,7 @@ function context () {
         e.appendChild(r = l)
       else if ('object' === typeof l) {
         for (var k in l) {
+          if(l[k] === false) continue
           if('function' === typeof l[k]) {
             if(/^on\w+/.test(k)) {
               (function (k, l) { // capture k, l in the closure
