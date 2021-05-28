@@ -106,6 +106,8 @@ function context () {
           }
           else if (k.substr(0, 5) === "data-") {
             e.setAttribute(k, l[k])
+          } else if (k === 'class') {
+            l[k].split(/\s+/).forEach(klass => ClassList(e).add(klass))
           } else {
             e[k] = l[k]
           }

@@ -159,3 +159,10 @@ test('unicode selectors', function (t) {
   t.equal(h('span#⛄').outerHTML, '<span id="⛄"></span>')
   t.end()
 })
+
+test('classes from tag and attrs are merged', t => {
+  t.equal(h('.c1', {class: 'c2'}).outerHTML, '<div class="c1 c2"></div>')
+  t.equal(h('.c1.c2', {class: 'c3 c4'}).outerHTML, '<div class="c1 c2 c3 c4"></div>')
+  t.equal(h('.c1.c2', {class: 'c2 c3'}).outerHTML, '<div class="c1 c2 c3"></div>')
+  t.end()
+})
